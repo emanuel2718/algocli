@@ -8,6 +8,16 @@ sorters = {"insertionsort": ("def insertionsort(arr):\n"
                              "        arr[j+1] = key\n"
                              ),
 
+           "quicksort":     ("def quicksort(arr):\n"
+                             "    if len(arr) < 2:\n"
+                             "        return arr\n"
+                             "    else:\n"
+                             "        pivot = arr[0]\n"
+                             "        smaller = [i for i in [1:] if i <= pivot]\n"
+                             "        greater = [i for i in [1:] if i > pivot]\n"
+                             "   return quicksort(smaller) + [pivot] + quicksort(greater)\n"
+                             ),
+
            "selectionsort": ("def findSmallestIndex(arr):\n"
                              "    smallest = arr[0]\n"
                              "    smallest_index = 0\n"

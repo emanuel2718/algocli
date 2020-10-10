@@ -2,10 +2,8 @@ import algorithms
 import util
 
 def main():
-    #print(algorithms.sorters['insertionsort'])
-    #print(algorithms.search['binarysearch'])
-    print('\n' + util.information['selectionsort'])
-    print(algorithms.sorters['selectionsort'])
+    print('\n' + util.information['quicksort'])
+    print(algorithms.sorters['quicksort'])
 
 
 
@@ -15,4 +13,8 @@ def main():
 
 
 if __name__ == '__main__':
+    # TODO: Handle errors
+    # TODO: Handle command line arguments
+    # TODO: Handle command line arguments
+    # TODO: Expand to other languages (need to refactor the file structure (folder per language))
     main()
