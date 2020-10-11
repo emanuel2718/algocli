@@ -1,5 +1,5 @@
 <h1 align="center" style="font-size: 3rem;">
-Algo-cli
+algoCLI
 </h1>
 
 ## TODO:
