@@ -4,9 +4,9 @@ Algo-cli
 
 ## TODO:
 
+- [x] Handle command line arguments
 - [ ] Make the `n` font in the complexity section be italic 
-- [ ] Think about whether to divide sorters and searchers or keep them together
-- [ ] Handle command line arguments
+- [ ] `algocli -python -quicksort` or `algocli -cpp -quicksort` cli argument for language of choice
 - [ ] Hanlde user input errors
 - [ ] Handle different OS (Windows, Linux, MacOS)
 - [ ] Expand to other languages (need to refactor the file structure (folder per language))
