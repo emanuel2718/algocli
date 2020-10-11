@@ -1,3 +1,8 @@
+swap_function = ("# helper function\n"
+                 "def swap(arr, i, j):\n"
+                 "  arr[i], arr[j] = arr[j], arr[i]\n\n")
+
+
 functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "def binarysearch(arr, item):\n"
                                "    low = 0\n"
@@ -49,5 +54,18 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "        smallest = findSmallestIndex(arr)\n"
                                "        temp_arr.append(arr.pop(smallest))\n"
                                "    return temp_arr\n"
+                               ),
+             "stoogesort":    (swap_function +
+                               "def stoogesort(arr, i=0, j=None):\n"
+                               "    if j is None:\n"
+                               "        j = len(arr)-1\n"
+                               "    if arr[j] < arr[i]:\n"
+                               "        swap(arr, i, j)\n"
+                               "    if j-i > 1:\n"
+                               "        temp = (j-1-i)//3\n"
+                               "        stoogesort(arr, i, j-temp)\n"
+                               "        stoogesort(arr, i+temp, j)\n"
+                               "        stoogesort(arr, i, j-temp)\n"
                                )
              }
+

@@ -34,44 +34,46 @@ def get_algorithm_from_parser(args):
             None if no algorithm flag was received
     """
     for key, value in args.items():
-        # Make sure is not a language flag
         if value and not key in SUPPORTED_LANGUAGES:
             return key
     return None
 
 def argument_error_checker(language, algorithm):
     # TODO: raise exceptions and Errors
-    print(f'Language flag: {language}')
     if language is None:
-        print('Message: No language flag was provided.')
+        print('Warning: No language flag was provided. Using default language: Python')
     if language is not None and algorithm is None:
         print('Error: Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
         return False
     return True
 
 def print_algorithm_to_cli(algorithm):
-    print('\n' + util.information[algorithm])
+    print('\n----------------------------------------\n')
+    print(util.information[algorithm])
     print(algorithms.functions[algorithm])
+    print('----------------------------------------\n')
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='Print common algorithms to the command line')
+    parser = argparse.ArgumentParser(description='Print algorithms to the command line', usage='algocli [-h] -cpp -quicksort')
     parser.add_argument('-l', '--list', help='Show List of available algorithm', action='store_true')
-    parser.add_argument('-cpp', '--cpp', help='Show algorithm in C++', action='store_true')
-    parser.add_argument('-java', '--java', help='Show algorithm in Java', action='store_true')
-    parser.add_argument('-python', '--python', help='Show algorithm in Python', action='store_true')
-    parser.add_argument('-binarysearch', help='Binary Search algorithm', action='store_true')
-    parser.add_argument('-insertionsort', help='Insertion Sort algorithm', action='store_true')
-    parser.add_argument('-quicksort', help='Quick Sort algorithm', action='store_true')
-    parser.add_argument('-selectionsort', help='Selection Sort algorithm', action='store_true')
+
+    lang_group = parser.add_argument_group('supported languages (Optional) defaults to Python')
+    lang_group.add_argument('-cpp', '--cpp', help='Show algorithm in C++', action='store_true')
+    lang_group.add_argument('-java', '--java', help='Show algorithm in Java', action='store_true')
+    lang_group.add_argument('-python', '--python', help='Show algorithm in Python', action='store_true')
+
+    algo_group = parser.add_argument_group('available algorithms (Required)')
+    algo_group.add_argument('-binarysearch', help='Binary Search algorithm', action='store_true')
+    algo_group.add_argument('-insertionsort', help='Insertion Sort algorithm', action='store_true')
+    algo_group.add_argument('-quicksort', help='Quick Sort algorithm', action='store_true')
+    algo_group.add_argument('-selectionsort', help='Selection Sort algorithm', action='store_true')
+    algo_group.add_argument('-stoogesort', help='Stooge Sort algorithm', action='store_true')
     return parser
 
 def main():
     parser = get_parser()
     args = vars(parser.parse_args())
-
-    print(args)
-
 
     # TODO: Check if user asked for -list or -h or something else
     if args['list']:
@@ -82,6 +84,7 @@ def main():
     chosen_algorithm = get_algorithm_from_parser(args)
 
     if argument_error_checker(chosen_language, chosen_algorithm):
+        # TODO: Need to get think about how to call the correct language/algorithm
         print_algorithm_to_cli(chosen_algorithm)
 
 

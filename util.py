@@ -10,5 +10,8 @@ information = {"binarysearch": ("Algorithm: Binary Search\n"
                                  ),
 
                "selectionsort": ("Algorithm: Selection Sort\n"
-                                 "Complexity: O(n\u00b2)\n")
+                                 "Complexity: O(n\u00b2)\n"),
+
+               "stoogesort": ("Algorithm: Stooge Sort\n"
+                              "Complexity: O(n\u00b2)\n")
                }
