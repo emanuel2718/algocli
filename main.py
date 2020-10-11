@@ -2,8 +2,8 @@ import algorithms
 import util
 
 def main():
-    print('\n' + util.information['quicksort'])
-    print(algorithms.sorters['quicksort'])
+    print('\n' + util.information['insertionsort'])
+    print(algorithms.functions['insertionsort'])
 
 
 
