@@ -49,7 +49,8 @@ def argument_error_checker(language, algorithm):
 
 def print_algorithm_to_cli(algorithm):
     print('\n----------------------------------------\n')
-    print(util.information[algorithm])
+    # TODO: Time complexity will be optional
+    #print(util.information[algorithm])
     print(algorithms.functions[algorithm])
     print('----------------------------------------\n')
 
@@ -57,6 +58,7 @@ def print_algorithm_to_cli(algorithm):
 def get_parser():
     parser = argparse.ArgumentParser(description='Print algorithms to the command line', usage='algocli [-h] -cpp -quicksort')
     parser.add_argument('-l', '--list', help='Show List of available algorithm', action='store_true')
+    parser.add_argument('-c', '--complexity', help='Show time and space complexities of the algorithm', action='store_true')
 
     lang_group = parser.add_argument_group('supported languages (Optional) defaults to Python')
     lang_group.add_argument('-cpp', '--cpp', help='Show algorithm in C++', action='store_true')

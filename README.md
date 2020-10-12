@@ -5,7 +5,7 @@ algoCLI
 ## TODO:
 
 - [x] Handle command line arguments
-- [ ] Make the `n` font in the complexity section be italic 
+- [ ] Make the complexities optional `-c`
 - [ ] `algocli -python -quicksort` or `algocli -cpp -quicksort` cli argument for language of choice
 - [ ] Hanlde user input errors
 - [ ] Handle different OS (Windows, Linux, MacOS)
