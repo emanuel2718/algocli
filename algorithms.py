@@ -66,6 +66,7 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "        stoogesort(arr, i, j-temp)\n"
                                "        stoogesort(arr, i+temp, j)\n"
                                "        stoogesort(arr, i, j-temp)\n"
+                               "    return arr"
                                )
              }
 
