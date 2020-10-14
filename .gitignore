@@ -1,4 +1,6 @@
-*__
-algocli.egg-info
+__pycache__/
+
+.Python
+*.egg-info/
 build/
 dist/
