@@ -16,7 +16,7 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "            high = mid -1\n"
                                "        else:\n"
                                "            low = mid + 1\n"
-                               "    return None\n"
+                               "    return None"
                                ),
 
              "insertionsort": ("def insertionsort(arr):\n"
@@ -26,7 +26,7 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "        while j >= 0 and key < arr[j]:\n"
                                "            arr[j+1] = arr[j]\n"
                                "            j -= 1\n"
-                               "        arr[j+1] = key\n"
+                               "        arr[j+1] = key"
                                ),
 
              "quicksort":     ("def quicksort(arr):\n"
@@ -36,7 +36,7 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "        pivot = arr[0]\n"
                                "        smaller = [i for i in [1:] if i <= pivot]\n"
                                "        greater = [i for i in [1:] if i > pivot]\n"
-                               "   return quicksort(smaller) + [pivot] + quicksort(greater)\n"
+                               "   return quicksort(smaller) + [pivot] + quicksort(greater)"
                                ),
 
              "selectionsort": ("def findSmallestIndex(arr):\n"
@@ -53,7 +53,7 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "    for i in range(len(arr)):\n"
                                "        smallest = findSmallestIndex(arr)\n"
                                "        temp_arr.append(arr.pop(smallest))\n"
-                               "    return temp_arr\n"
+                               "    return temp_arr"
                                ),
 
              "stoogesort":    (swap_function +

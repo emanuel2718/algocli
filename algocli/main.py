@@ -7,6 +7,14 @@
 
 import algocli.algorithms as algorithms
 import algocli.util as util
+#import importlib
+
+#importlib.reload(algorithms)
+#importlib.reload(util)
+
+#import algocli.algorithms as algorithms
+#import algocli.util as util
+
 import argparse
 import sys
 
@@ -48,11 +56,13 @@ def argument_error_checker(language, algorithm):
     return True
 
 def print_algorithm_to_cli(algorithm):
-    print('\n----------------------------------------\n')
+    #print('\n----------------------------------------\n')
+    print('\n' + '-'*80 + '\n')
     # TODO: Time complexity will be optional
     #print(util.information[algorithm])
     print(algorithms.functions[algorithm])
-    print('----------------------------------------\n')
+    print('\n' + '-'*80 + '\n')
+    #print('----------------------------------------\n')
 
 
 def get_parser():
