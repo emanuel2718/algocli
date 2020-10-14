@@ -1,13 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 # Program: algocli
 # Author: Emanuel Ramirez Alsina (eramirez)
 # Date created: 10/10/2020
 
 
-import algorithms
+import algocli.algorithms as algorithms
+import algocli.util as util
 import argparse
-import util
 import sys
 
 SUPPORTED_LANGUAGES = ['cpp', 'java', 'python']

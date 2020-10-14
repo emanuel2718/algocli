@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: algocli
+Version: 0.1
+Summary: Print common known algorithms to the command line
+Home-page: https://github.com/eramirez2718/algocli
+Author: Emanuel Ramirez Alsina
+Author-email: eramirez2718@gmail.com
+License: MIT
+Description: UNKNOWN
+Keywords: python algorithms cli
+Platform: UNKNOWN
