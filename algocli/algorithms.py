@@ -18,6 +18,16 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "            low = mid + 1\n"
                                "    return None"
                                ),
+             "bubblesort":    ("def bubble sort(arr):\n"
+                               "    swapped = True\n"
+                               "    while swapped:\n"
+                               "        swapped = False\n"
+                               "        for i in range(len(arr)-1):\n"
+                               "            if arr[i] > arr[i+1]:\n"
+                               "                arr[i], arr[i+1] = arr[i+1], arr[i]\n"
+                               "                swapped = True\n"
+                               "    return arr\n"
+                               ),
 
              "insertionsort": ("def insertionsort(arr):\n"
                                "    for i in range(1, len(arr)):\n"

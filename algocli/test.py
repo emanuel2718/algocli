@@ -1,6 +1,8 @@
 import random
 import math
 
+#TODO: Make this into a proper test file
+
 def quicksort(arr):
     if len(arr) < 2:
         return arr
@@ -26,9 +28,22 @@ def stoogesort(arr, low, high):
     return arr
 
 
+def bubblesort(arr):
+    swapped = True
+    while swapped:
+        swapped = False
+        for i in range(len(arr)-1):
+            if arr[i] > arr[i+1]:
+                arr[i], arr[i+1] = arr[i+1], arr[i]
+                swapped = True
+    return arr
+
+
+
 
 random_numbers = random.sample(range(100), 10)
 lenght = len(random_numbers)
 
 print(f'Array before: {random_numbers}')
-print(stoogesort(random_numbers, 0, lenght-1))
+#print(stoogesort(random_numbers, 0, lenght-1))
+print(bubblesort(random_numbers))

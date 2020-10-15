@@ -59,7 +59,7 @@ def print_algorithm_to_cli(algorithm):
     #print('\n----------------------------------------\n')
     print('\n' + '-'*80 + '\n')
     # TODO: Time complexity will be optional
-    #print(util.information[algorithm])
+    print(util.information[algorithm])
     print(algorithms.functions[algorithm])
     print('\n' + '-'*80 + '\n')
     #print('----------------------------------------\n')
@@ -77,6 +77,7 @@ def get_parser():
 
     algo_group = parser.add_argument_group('available algorithms (Required)')
     algo_group.add_argument('-binarysearch', help='Binary Search algorithm', action='store_true')
+    algo_group.add_argument('-bubblesort', help='Bubble Sort algorithm', action='store_true')
     algo_group.add_argument('-insertionsort', help='Insertion Sort algorithm', action='store_true')
     algo_group.add_argument('-quicksort', help='Quick Sort algorithm', action='store_true')
     algo_group.add_argument('-selectionsort', help='Selection Sort algorithm', action='store_true')
