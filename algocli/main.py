@@ -75,13 +75,16 @@ def get_parser():
     lang_group.add_argument('-java', '--java', help='Show algorithm in Java', action='store_true')
     lang_group.add_argument('-python', '--python', help='Show algorithm in Python', action='store_true')
 
-    algo_group = parser.add_argument_group('available algorithms (Required)')
-    algo_group.add_argument('-binarysearch', help='Binary Search algorithm', action='store_true')
-    algo_group.add_argument('-bubblesort', help='Bubble Sort algorithm', action='store_true')
-    algo_group.add_argument('-insertionsort', help='Insertion Sort algorithm', action='store_true')
-    algo_group.add_argument('-quicksort', help='Quick Sort algorithm', action='store_true')
-    algo_group.add_argument('-selectionsort', help='Selection Sort algorithm', action='store_true')
-    algo_group.add_argument('-stoogesort', help='Stooge Sort algorithm', action='store_true')
+    sort_group = parser.add_argument_group('Sorting algorithms (Required)')
+    sort_group.add_argument('-bubblesort', help='Bubble Sort algorithm', action='store_true')
+    sort_group.add_argument('-insertionsort', help='Insertion Sort algorithm', action='store_true')
+    sort_group.add_argument('-quicksort', help='Quick Sort algorithm', action='store_true')
+    sort_group.add_argument('-selectionsort', help='Selection Sort algorithm', action='store_true')
+    sort_group.add_argument('-stoogesort', help='Stooge Sort algorithm', action='store_true')
+
+    search_group = parser.add_argument_group('Searching algorithms (Required)')
+    search_group.add_argument('-binarysearch', help='Binary Search algorithm', action='store_true')
+
     return parser
 
 def main():
