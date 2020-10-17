@@ -49,13 +49,11 @@ def argument_error_checker(language, algorithm):
     return True
 
 def print_algorithm_to_cli(algorithm):
-    #print('\n----------------------------------------\n')
     print('\n' + '-'*80 + '\n')
     # TODO: Time complexity will be optional
     print(util.information[algorithm])
     print(algorithms.functions[algorithm])
     print('\n' + '-'*80 + '\n')
-    #print('----------------------------------------\n')
 
 
 def get_parser():

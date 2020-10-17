@@ -2,9 +2,9 @@
 CONSTANT = 'O(1)'
 LOGARITHMIC = 'O(log(N))'
 LINEAR = 'O(N)'
-NLOGN = 'O(nlog(N))'
+NLOGN = 'O(Nlog(N))'
 CUADRATIC = 'O(N\u00b2)'
-CUBIC = 'O(n\u00b3)'
+CUBIC = 'O(N\u00b3)'
 
 def print_algorithm_info(algorithm=None, complexity=None):
     if algorithm is not None:
