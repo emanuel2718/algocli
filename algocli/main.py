@@ -7,13 +7,6 @@
 
 import algocli.algorithms as algorithms
 import algocli.util as util
-#import importlib
-
-#importlib.reload(algorithms)
-#importlib.reload(util)
-
-#import algocli.algorithms as algorithms
-#import algocli.util as util
 
 import argparse
 import sys
@@ -78,6 +71,7 @@ def get_parser():
     sort_group = parser.add_argument_group('Sorting algorithms (Required)')
     sort_group.add_argument('-bubblesort', help='Bubble Sort algorithm', action='store_true')
     sort_group.add_argument('-insertionsort', help='Insertion Sort algorithm', action='store_true')
+    sort_group.add_argument('-mergesort', help='Merge Sort algorithm', action='store_true')
     sort_group.add_argument('-quicksort', help='Quick Sort algorithm', action='store_true')
     sort_group.add_argument('-selectionsort', help='Selection Sort algorithm', action='store_true')
     sort_group.add_argument('-stoogesort', help='Stooge Sort algorithm', action='store_true')

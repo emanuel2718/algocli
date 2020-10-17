@@ -39,6 +39,36 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "        arr[j+1] = key"
                                ),
 
+             "mergesort":     ("def mergesort(arr):\n"
+                               "    if len(arr) <= 1:\n"
+                               "        return arr\n"
+                               "    mid = len(arr) // 2\n"
+                               "    left = arr[:mid]\n"
+                               "    right = arr[mid:]\n\n"
+
+                               "    left = mergesort(left)\n"
+                               "    right = mergesort(right)\n"
+                               "    return list(merge_helper(left, right))\n\n\n"
+
+                               "def merge_helper(left, right):\n"
+                               "    arr = []\n"
+                               "    left_index, right_index = 0, 0\n\n"
+                               "    while left_index < len(left) and right_index < len(right):\n"
+                               "        if left[left_index] <= right[right_index]:\n"
+                               "            arr.append(left[left_index])\n"
+                               "            left_index += 1\n"
+                               "        else:\n"
+                               "            arr.append(right[right_index])\n"
+                               "            right_index += 1\n\n"
+
+                               "    if left_index < len(left):\n"
+                               "        arr.extend(left[left_index:])\n"
+                               "    if right_index < len(right):\n"
+                               "        arr.extend(right[right_index:])\n"
+
+                               "    return arr"
+                               ),
+
              "quicksort":     ("def quicksort(arr):\n"
                                "    if len(arr) < 2:\n"
                                "        return arr\n"

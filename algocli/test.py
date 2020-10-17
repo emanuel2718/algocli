@@ -39,6 +39,39 @@ def bubblesort(arr):
     return arr
 
 
+def mergesort(arr):
+    if len(arr) <= 1:
+        return arr
+
+    mid = len(arr) // 2
+    left = arr[:mid]
+    right = arr[mid:]
+
+    left = mergesort(left)
+    right = mergesort(right)
+
+    return list(merge(left, right))
+
+
+def merge(left, right):
+    arr = []
+    left_index, right_index = 0, 0
+
+    while left_index < len(left) and right_index < len(right):
+        if left[left_index] <= right[right_index]:
+            arr.append(left[left_index])
+            left_index += 1
+        else:
+            arr.append(right[right_index])
+            right_index += 1
+
+    if left_index < len(left):
+        arr.extend(left[left_index:])
+    if right_index < len(right):
+        arr.extend(right[right_index:])
+
+    return arr
+
 
 
 random_numbers = random.sample(range(100), 10)
@@ -46,4 +79,4 @@ lenght = len(random_numbers)
 
 print(f'Array before: {random_numbers}')
 #print(stoogesort(random_numbers, 0, lenght-1))
-print(bubblesort(random_numbers))
+print(mergesort(random_numbers))
