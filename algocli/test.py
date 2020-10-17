@@ -73,10 +73,36 @@ def merge(left, right):
     return arr
 
 
+def heapsort(arr):
+    # heapify
+    for start in range((len(arr)-2)//2, -1, -1):
+        siftdown(arr, start, len(arr)-1)
+
+    for end in range(len(arr)-1, 0, -1):
+        arr[0], arr[end] = arr[end], arr[0]
+        siftdown(arr, 0, end-1)
+    return arr
+
+def siftdown(arr, start, end):
+    root = start
+    while True:
+        child = root*2+1 # left child
+
+        if child > end:
+            break
+        if child+1 <= end and arr[child] < arr[child+1]:
+            child += 1
+        if arr[root] < arr[child]:
+            arr[child], arr[root] = arr[root], arr[child]
+            root = child
+        else:
+            break
+
 
 random_numbers = random.sample(range(100), 10)
-lenght = len(random_numbers)
+length = len(random_numbers)
 
 print(f'Array before: {random_numbers}')
 #print(stoogesort(random_numbers, 0, lenght-1))
-print(mergesort(random_numbers))
+print(heapsort(random_numbers))
+#print(random_numbers)

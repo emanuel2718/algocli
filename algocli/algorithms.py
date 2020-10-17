@@ -29,6 +29,32 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "    return arr\n"
                                ),
 
+             "heapsort":      ("def heapsort(arr):\n"
+                               "    # heapify\n"
+                               "    for start in range((len(arr)-2)//2, -1, -1):\n"
+                               "        siftdown(arr, start, len(arr)-1)\n\n"
+
+                               "    for end in range(len(arr)-1, 0, -1):\n"
+                               "        arr[0], arr[end] = arr[end], arr[0]\n"
+                               "        siftdown(arr, 0, end-1)\n"
+                               "    return arr\n\n"
+
+                               "def siftdown(arr, start, end):\n"
+                               "    root = start\n"
+                               "    while True:\n"
+                               "        child = root*2+1 # left child\n\n"
+
+                               "        if child > end:\n"
+                               "            break\n"
+                               "        if child+1 <= end and arr[child] < arr[child+1]:\n"
+                               "            child += 1\n"
+                               "        if arr[root] < arr[child]:\n"
+                               "            arr[child], arr[root] = arr[root], arr[child]\n"
+                               "            root = child\n"
+                               "        else:\n"
+                               "            break"
+                               ),
+
              "insertionsort": ("def insertionsort(arr):\n"
                                "    for i in range(1, len(arr)):\n"
                                "        key = arr[i]\n"
