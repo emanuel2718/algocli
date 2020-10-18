@@ -98,11 +98,29 @@ def siftdown(arr, start, end):
         else:
             break
 
+def bogosort(arr):
+    length = len(arr)
+    while not is_sorted(arr):
+        suffle(arr)
+    return arr
 
-random_numbers = random.sample(range(100), 10)
+def suffle(arr):
+    length = len(arr)
+    for i in range(0, length):
+        rand = random.randint(0, length-1)
+        arr[i], arr[rand] = arr[rand], arr[i]
+
+def is_sorted(arr):
+    length = len(arr)
+    for i in range(0, length-1):
+        if arr[i] > arr[i+1]:
+            return False
+    return True
+
+random_numbers = random.sample(range(100), 5)
 length = len(random_numbers)
 
 print(f'Array before: {random_numbers}')
 #print(stoogesort(random_numbers, 0, lenght-1))
-print(heapsort(random_numbers))
+print(bogosort(random_numbers))
 #print(random_numbers)

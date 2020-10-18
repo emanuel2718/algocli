@@ -5,6 +5,7 @@ LINEAR = 'O(N)'
 NLOGN = 'O(Nlog(N))'
 CUADRATIC = 'O(N\u00b2)'
 CUBIC = 'O(N\u00b3)'
+NFACTORIAL = 'N * N!'
 
 def print_algorithm_info(algorithm=None, complexity=None):
     if algorithm is not None:
@@ -14,6 +15,7 @@ def print_algorithm_info(algorithm=None, complexity=None):
 
 
 information = {"binarysearch": print_algorithm_info('Binary Search', LOGARITHMIC),
+               "bogosort": print_algorithm_info('Bogo Sort', NFACTORIAL),
                "bubblesort": print_algorithm_info('Bubble Sort', CUADRATIC),
                "heapsort": print_algorithm_info('Heap Sort', NLOGN),
                "insertionsort": print_algorithm_info('Insertion Sort', LINEAR),

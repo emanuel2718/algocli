@@ -18,6 +18,27 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "            low = mid + 1\n"
                                "    return None"
                                ),
+             "bogosort":      ("import random\n\n"
+                               "def bogosort(arr):\n"
+                               "    length = len(arr)\n"
+                               "    while not is_sorted(arr):\n"
+                               "        suffle(arr)\n"
+                               "    return arr\n\n"
+
+                               "def suffle(arr):\n"
+                               "    length = len(arr)\n"
+                               "    for i in range(0, length):\n"
+                               "        rand = random.randint(0, length-1)\n"
+                               "        arr[i], arr[rand] = arr[rand], arr[i]\n\n"
+
+                               "def is_sorted(arr):\n"
+                               "    length = len(arr)\n"
+                               "    for i in range(0, length-1):\n"
+                               "        if arr[i] > arr[i+1]:\n"
+                               "            return False\n"
+                               "    return True"
+                               ),
+
              "bubblesort":    ("def bubble sort(arr):\n"
                                "    swapped = True\n"
                                "    while swapped:\n"
