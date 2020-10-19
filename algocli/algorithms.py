@@ -125,6 +125,36 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "        greater = [i for i in [1:] if i > pivot]\n"
                                "   return quicksort(smaller) + [pivot] + quicksort(greater)"
                                ),
+             "radixsort":     ("def radixsort(arr, index=None, size=None):\n"
+                               "    if size == None:\n"
+                               "        size = len(str(max(arr)))\n"
+                               "    if index == None:\n"
+                               "        index = size\n\n"
+
+                               "    i = size - index\n"
+                               "    if i >= size:\n"
+                               "        return arr\n\n"
+
+                               "    bins = [[] for _ in range(10)]\n"
+                               "    for e in arr:\n"
+                               "        dest = int(str(e).zfill(size)[i])\n"
+                               "        bins[dest] += [e]\n\n"
+
+                               "    result = []\n"
+                               "    for bin in bins:\n"
+                               "        if bin == []:\n"
+                               "            continue\n"
+                               "        result.append(radixsort(bin, index-1, size))\n\n"
+
+                               "    flat_result = flatten(result)\n"
+                               "    return flat_result\n\n"
+
+                               "def flatten(old_list):\n"
+                               "    new_list = []\n"
+                               "    for i in old_list:\n"
+                               "        new_list += i\n"
+                               "    return new_list"
+                               ),
 
              "selectionsort": ("def findSmallestIndex(arr):\n"
                                "    smallest = arr[0]\n"

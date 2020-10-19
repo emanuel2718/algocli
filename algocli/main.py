@@ -75,6 +75,7 @@ def get_parser():
     sort_group.add_argument('-insertionsort', help='InsertionSort algorithm', action='store_true')
     sort_group.add_argument('-mergesort', help='MergeSort algorithm', action='store_true')
     sort_group.add_argument('-quicksort', help='QuickSort algorithm', action='store_true')
+    sort_group.add_argument('-radixsort', help='RadixSort algorithm', action='store_true')
     sort_group.add_argument('-selectionsort', help='SelectionSort algorithm', action='store_true')
     sort_group.add_argument('-stoogesort', help='StoogeSort algorithm', action='store_true')
 

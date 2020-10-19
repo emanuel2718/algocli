@@ -2,6 +2,7 @@
 CONSTANT = 'O(1)'
 LOGARITHMIC = 'O(log(N))'
 LINEAR = 'O(N)'
+NK = 'O(NK)'
 NLOGN = 'O(Nlog(N))'
 CUADRATIC = 'O(N\u00b2)'
 CUBIC = 'O(N\u00b3)'
@@ -21,6 +22,7 @@ information = {"binarysearch": print_algorithm_info('Binary Search', LOGARITHMIC
                "insertionsort": print_algorithm_info('Insertion Sort', LINEAR),
                "mergesort": print_algorithm_info('Merge Sort', NLOGN),
                "quicksort":     print_algorithm_info('Quick Sort', NLOGN),
+               "radixsort":     print_algorithm_info('Radix Sort', NK),
                "selectionsort": print_algorithm_info('Selection Sort', CUADRATIC),
                "stoogesort": print_algorithm_info('Stooge Sort', CUADRATIC)
                }

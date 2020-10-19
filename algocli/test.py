@@ -3,6 +3,7 @@ import math
 
 #TODO: Make this into a proper test file
 
+# QUICKSORT
 def quicksort(arr):
     if len(arr) < 2:
         return arr
@@ -12,10 +13,8 @@ def quicksort(arr):
         greater = [i for i in arr[1:] if i > pivot]
         return quicksort(smaller) + [pivot] + quicksort(greater)
 
-def swap(arr, index1, index2):
-    arr[index1], arr[index2] = arr[index2], arr[index1]
 
-
+# STOOGESORT
 def stoogesort(arr, low, high):
     n = high - low + 1
     if n == 2 and arr[low] > arr[high]:
@@ -27,7 +26,11 @@ def stoogesort(arr, low, high):
         stoogesort(arr, low, high-mid)
     return arr
 
+def swap(arr, index1, index2):
+    arr[index1], arr[index2] = arr[index2], arr[index1]
 
+
+# BUBBLESORT
 def bubblesort(arr):
     swapped = True
     while swapped:
@@ -39,6 +42,7 @@ def bubblesort(arr):
     return arr
 
 
+# MERGESORT
 def mergesort(arr):
     if len(arr) <= 1:
         return arr
@@ -73,6 +77,7 @@ def merge(left, right):
     return arr
 
 
+# HEAPSORT
 def heapsort(arr):
     # heapify
     for start in range((len(arr)-2)//2, -1, -1):
@@ -98,6 +103,7 @@ def siftdown(arr, start, end):
         else:
             break
 
+# BOGOSORT
 def bogosort(arr):
     length = len(arr)
     while not is_sorted(arr):
@@ -117,10 +123,43 @@ def is_sorted(arr):
             return False
     return True
 
+
+
+
+# RADIXSORT
+def radixsort(arr, index=None, size=None):
+    if size == None:
+        size = len(str(max(arr)))
+    if index == None:
+        index = size
+    i = size - index
+
+    if i >= size:
+        return arr
+    bins = [[] for _ in range(10)]
+    for e in arr:
+        dest = int(str(e).zfill(size)[i])
+        bins[dest] += [e]
+
+    result = []
+    for bin in bins:
+        if bin == []:
+            continue
+        result.append(radixsort(bin, index-1, size))
+
+    flat_result = flatten(result)
+    return flat_result
+
+def flatten(old_list):
+    new_list = []
+    for i in old_list:
+        new_list += i
+    return new_list
+
 random_numbers = random.sample(range(100), 5)
 length = len(random_numbers)
 
 print(f'Array before: {random_numbers}')
 #print(stoogesort(random_numbers, 0, lenght-1))
-print(bogosort(random_numbers))
+print(radixsort(random_numbers))
 #print(random_numbers)
