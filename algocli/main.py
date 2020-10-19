@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
-# Program: algocli
-# Author: Emanuel Ramirez Alsina (eramirez)
-# Date created: 10/10/2020
-
+"""
+Program: algoCLI
+Author: Emanuel Ramirez Alsina
+Email: eramirez2718@gmail.com
+Date created: 10/10/2020
+"""
 
 import algocli.algorithms as algorithms
 import algocli.util as util
