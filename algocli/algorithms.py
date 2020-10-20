@@ -49,6 +49,31 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "                swapped = True\n"
                                "    return arr\n"
                                ),
+
+             "cyclesort":     ("def cyclesort(arr):\n"
+                               "    for start, item in enumerate(arr):\n"
+                               "        position = start\n"
+                               "        for item2 in arr[start+1:]:\n"
+                               "            if item > item2:\n"
+                               "                position += 1\n"
+                               "        if position == start:\n"
+                               "            continue\n\n"
+
+                               "        while item == arr[position]:\n"
+                               "            position += 1\n"
+                               "        arr[position], item = item, arr[position]\n\n"
+
+                               "        while position != start:\n"
+                               "            position = start\n"
+                               "            for item2 in arr[start+1:]:\n"
+                               "                if item > item2:\n"
+                               "                    position += 1\n"
+                               "            while item == arr[position]:\n"
+                               "                position += 1\n"
+                               "            arr[position], item = item, arr[position]\n"
+                               "    return arr"
+                               ),
+
              "gnomesort":     ("def gnomesort(arr):\n"
                                "    i = 1\n"
                                "    j = 2\n"

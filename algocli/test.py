@@ -149,7 +149,6 @@ def radixsort(arr, index=None, size=None):
 
     flat_result = flatten(result)
     return flat_result
-
 def flatten(old_list):
     new_list = []
     for i in old_list:
@@ -191,10 +190,42 @@ l = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 random_numbers = random.sample(range(100), 5)
 length = len(random_numbers)
 
+
+
+
+
+# CYCLESORT
+def cyclesort(arr):
+    for start, item in enumerate(arr):
+        position = start
+        for item2 in arr[start+1:]:
+            if item > item2:
+                position += 1
+        if position == start:
+            continue
+
+        while item == arr[position]:
+            position += 1
+        arr[position], item = item, arr[position]
+
+        while position != start:
+            position = start
+            for item2 in arr[start+1:]:
+                if item > item2:
+                    position += 1
+            while item == arr[position]:
+                position += 1
+            arr[position], item = item, arr[position]
+    return arr
+
+
+
+
+
 #print(f'Array before: {random_numbers}')
 #print(stoogesort(random_numbers, 0, lenght-1))
 #print(radixsort(random_numbers))
 #print(random_numbers)
 
 print(f'Array before: {l}')
-print(shellsort(l))
+print(cyclesort(l))
