@@ -156,10 +156,32 @@ def flatten(old_list):
         new_list += i
     return new_list
 
+
+# GNOMESORT
+def gnomesort(arr):
+    i = 1
+    j = 2
+    size = len(arr)
+    while i < size:
+        if arr[i] >= arr[i-1]:
+            i, j = j, j+1
+        else:
+            arr[i], arr[i-1] = arr[i-1], arr[i]
+            i -= 1
+            if i == 0:
+                i, j = j, j+1
+    return arr
+
+
+
+l = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 random_numbers = random.sample(range(100), 5)
 length = len(random_numbers)
 
-print(f'Array before: {random_numbers}')
+#print(f'Array before: {random_numbers}')
 #print(stoogesort(random_numbers, 0, lenght-1))
-print(radixsort(random_numbers))
+#print(radixsort(random_numbers))
 #print(random_numbers)
+
+print(f'Array before: {l}')
+print(gnomesort(l))

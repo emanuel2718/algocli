@@ -18,6 +18,7 @@ def print_algorithm_info(algorithm=None, complexity=None):
 information = {"binarysearch": print_algorithm_info('Binary Search', LOGARITHMIC),
                "bogosort": print_algorithm_info('Bogo Sort', NFACTORIAL),
                "bubblesort": print_algorithm_info('Bubble Sort', CUADRATIC),
+               "gnomesort": print_algorithm_info('Gnome Sort', CUADRATIC),
                "heapsort": print_algorithm_info('Heap Sort', NLOGN),
                "insertionsort": print_algorithm_info('Insertion Sort', LINEAR),
                "mergesort": print_algorithm_info('Merge Sort', NLOGN),

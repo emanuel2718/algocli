@@ -71,6 +71,7 @@ def get_parser():
     sort_group = parser.add_argument_group('Sorting algorithms (Required)')
     sort_group.add_argument('-bogosort', help='BogoSort algorithm', action='store_true')
     sort_group.add_argument('-bubblesort', help='BubbleSort algorithm', action='store_true')
+    sort_group.add_argument('-gnomesort', help='GnomeSort algorithm', action='store_true')
     sort_group.add_argument('-heapsort', help='HeapSort algorithm', action='store_true')
     sort_group.add_argument('-insertionsort', help='InsertionSort algorithm', action='store_true')
     sort_group.add_argument('-mergesort', help='MergeSort algorithm', action='store_true')
