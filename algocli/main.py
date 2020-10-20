@@ -78,6 +78,7 @@ def get_parser():
     sort_group.add_argument('-quicksort', help='QuickSort algorithm', action='store_true')
     sort_group.add_argument('-radixsort', help='RadixSort algorithm', action='store_true')
     sort_group.add_argument('-selectionsort', help='SelectionSort algorithm', action='store_true')
+    sort_group.add_argument('-shellsort', help='ShellSort algorithm', action='store_true')
     sort_group.add_argument('-stoogesort', help='StoogeSort algorithm', action='store_true')
 
     search_group = parser.add_argument_group('Searching algorithms (Required)')

@@ -172,7 +172,20 @@ def gnomesort(arr):
                 i, j = j, j+1
     return arr
 
-
+# SHELLSORT
+def shellsort(arr):
+   increment = len(arr)//2
+   while increment:
+       for i, element in enumerate(arr[increment:], increment):
+           while i >= increment and arr[i-increment] > element:
+               arr[i] = arr[i-increment]
+               i -= increment
+           arr[i] = element
+       if increment == 2:
+           increment = 1
+       else:
+           increment = increment*5 // 11
+   return arr
 
 l = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 random_numbers = random.sample(range(100), 5)
@@ -184,4 +197,4 @@ length = len(random_numbers)
 #print(random_numbers)
 
 print(f'Array before: {l}')
-print(gnomesort(l))
+print(shellsort(l))

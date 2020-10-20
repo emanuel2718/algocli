@@ -187,6 +187,21 @@ functions = {"binarysearch":  ("# iterative Algorithm:\n"
                                "    return temp_arr"
                                ),
 
+             "shellsort":      ("def shellsort(arr):\n"
+                                "   increment = len(arr)//2\n"
+                                "   while increment:\n"
+                                "       for i, element in enumerate(arr[increment:], increment):\n"
+                                "           while i >= increment and arr[i-increment] > element:\n"
+                                "               arr[i] = arr[i-increment]\n"
+                                "               i -= increment\n"
+                                "           arr[i] = element\n"
+                                "       if increment == 2:\n"
+                                "           increment = 1\n"
+                                "       else:\n"
+                                "           increment = increment*5 // 11\n"
+                                "   return arr"
+                                ),
+
              "stoogesort":    (swap_function +
                                "# low: first index of arr\n"
                                "# high: last index of arr\n\n"

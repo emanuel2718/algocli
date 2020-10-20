@@ -5,6 +5,7 @@ LINEAR = 'O(N)'
 NK = 'O(NK)'
 NLOGN = 'O(Nlog(N))'
 CUADRATIC = 'O(N\u00b2)'
+NLOGNSQUARED = 'O(NLOG(N)\u00b2)'
 CUBIC = 'O(N\u00b3)'
 NFACTORIAL = 'N * N!'
 
@@ -25,5 +26,6 @@ information = {"binarysearch": print_algorithm_info('Binary Search', LOGARITHMIC
                "quicksort":     print_algorithm_info('Quick Sort', NLOGN),
                "radixsort":     print_algorithm_info('Radix Sort', NK),
                "selectionsort": print_algorithm_info('Selection Sort', CUADRATIC),
+               "shellsort": print_algorithm_info('Shell Sort', NLOGNSQUARED),
                "stoogesort": print_algorithm_info('Stooge Sort', CUADRATIC)
                }
