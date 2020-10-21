@@ -218,7 +218,24 @@ def cyclesort(arr):
             arr[position], item = item, arr[position]
     return arr
 
-
+# COCKTAILSORT
+def cocktailsort(arr):
+    for i in range(len(arr)//2):
+        swapped = False
+        for j in range(1+i, len(arr)-i):
+            if arr[j-1] > arr[j]:
+                arr[j-1], arr[j] = arr[j], arr[j-1]
+                swapped = True
+        if not swapped:
+            break
+        swapped = False
+        for j in range(len(arr)-i-1, i, -1):
+            if arr[j-1] > arr[j]:
+                arr[j-1], arr[j]  = arr[j], arr[j-1]
+                swapped = True
+        if not swapped:
+            break
+    return arr
 
 
 
@@ -228,4 +245,4 @@ def cyclesort(arr):
 #print(random_numbers)
 
 print(f'Array before: {l}')
-print(cyclesort(l))
+print(cocktailsort(l))
