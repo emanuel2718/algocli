@@ -6,6 +6,7 @@ algoCLI
 
 - [x] Handle command line arguments
 - [x] `algocli -python -quicksort` or `algocli -cpp -quicksort` cli argument for language of choice
+- [ ] Add C++ and Java algorithms
 - [ ] Make the complexities optional `-c`
 - [ ] Think about how to only have to type the algorithm once. Extract it from code somehow?
 - [ ] Show list of algorithms by complexities and divided by search and sorting
