@@ -17,6 +17,7 @@ SUPPORTED_LANGUAGES = ['cpp', 'java', 'python']
 
 def show_available_algorithms():
     # TODO: implement this (Pager?)
+    print('NOT YET IMPLEMENTED')
     print('Showing available algorithms')
 
 def check_for_language_flag(args_dict):
