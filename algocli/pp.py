@@ -5,13 +5,15 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import html2text
+from util import algorithms
+from util import supported_languages
 #from selenium import webdriver
 #from selenium.webdriver.chrome.options import Options
 
 
 sec_number = ''
 #TODO: check Bubble sort exception
-sort_method = 'Shell_sort'
+sort_method = 'Selection_sort'
 
 url = f'https://rosettacode.org/wiki/Sorting_algorithms/{sort_method}'
 #url = f'https://rosettacode.org/wiki/{sort_method}#Python'
