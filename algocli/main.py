@@ -1,112 +1,103 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 
-"""
-Program: algoCLI
-Author: Emanuel Ramirez Alsina
-Email: eramirez2718@gmail.com
-Date created: 10/10/2020
-"""
-
-import algocli.algorithms as algorithms
-import algocli.util as util
+'''
+algocli - Print algorithms to the command line
+written by Emanuel Ramirez (emanuel2718@gmail.com)
+'''
 
 import argparse
-import sys
+import requests
+import util
+from bs4 import BeautifulSoup
 
-SUPPORTED_LANGUAGES = ['cpp', 'java', 'python']
 
-def show_available_algorithms():
-    # TODO: implement this (Pager?)
-    print('NOT YET IMPLEMENTED')
-    print('Showing available algorithms')
+class DataHandler:
+    def __init__(self, algorithm, language=None):
+        self.algorithm = algorithm
+        self.language = language
 
-def check_for_language_flag(args_dict):
-    """
-    @args_dict: dictionary of possible command-line arguments
-    return: language if the language flag was received from cli argument
-            None if no language flag was received
-    """
-    for language in SUPPORTED_LANGUAGES:
-        if args_dict[language]:
-            return language
+        self.fixed_algorithm = self.get_fixed_algorithm(self.algorithm)
+        self.fixed_language = self.get_fixed_language(self.language)
+        print(self.fixed_language)
+
+
+    def get_fixed_algorithm(self, algo):
+        ''' The rosettacode page address must contain the sorting algorithm in
+            a specific format. For example, -insertionsort must appear as Insertion_sort
+
+        :param algo: the algorithm flag string (i.e selectionsort)
+        :return formatted algorithm string (i.e Selection_sort)
+        '''
+        for key, value in util.SORTING_ALGORITHMS.items():
+            if algo == key:
+                return value[0]
+        return None
+
+    def get_fixed_language(self, lang):
+        # Python is the default language if no language flag was given
+        if lang is None:
+            return 'Python'
+        for key, value in util.SUPPORTED_LANGUAGES.items():
+            if lang == key:
+                return value[0]
+        return None
+
+
+def get_language_from_parser(args):
+    for lang in util.SUPPORTED_LANGUAGES.keys():
+        if args[lang]:
+            return lang
     return None
 
 def get_algorithm_from_parser(args):
-    """
-    @args: dictionary of possible command-line arguments.
-    return: algorithm from cli-argument
-            None if no algorithm flag was received
-    """
     for key, value in args.items():
-        if value and not key in SUPPORTED_LANGUAGES:
+        if key in util.SORTING_ALGORITHMS.keys() and value:
             return key
     return None
 
-def argument_error_checker(language, algorithm):
-    # TODO: raise exceptions and Errors
-    if language is None:
+def no_error_in_arguments(lang, algo):
+    if lang is None:
         print('Warning: No language flag was provided. Using default language: Python')
-    if language is not None and algorithm is None:
+
+    if lang is not None and algo is None:
         print('Error: Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
         return False
     return True
 
-def print_algorithm_to_cli(algorithm):
-    print('\n' + '-'*80 + '\n')
-    # TODO: Time complexity will be optional
-    print(util.information[algorithm])
-    print(algorithms.functions[algorithm])
-    print('\n' + '-'*80 + '\n')
-
-
 def get_parser():
-    parser = argparse.ArgumentParser(description='Print algorithms to the command line', usage='algocli [-h] -cpp -quicksort')
-    parser.add_argument('-l', '--list', help='Show List of available algorithm', action='store_true')
-    parser.add_argument('-c', '--complexity', help='Show time and space complexities of the algorithm', action='store_true')
-
-    lang_group = parser.add_argument_group('supported languages (Optional) defaults to Python')
-    lang_group.add_argument('-cpp', '--cpp', help='Show algorithm in C++', action='store_true')
-    lang_group.add_argument('-java', '--java', help='Show algorithm in Java', action='store_true')
-    lang_group.add_argument('-python', '--python', help='Show algorithm in Python', action='store_true')
+    parser = argparse.ArgumentParser(description='Print algorithms to the command line',
+                                     usage='algocli [-h] -language -algorithm',
+                                     formatter_class=argparse.RawTextHelpFormatter)
 
     sort_group = parser.add_argument_group('Sorting algorithms (Required)')
-    sort_group.add_argument('-bogosort', help='BogoSort algorithm', action='store_true')
-    sort_group.add_argument('-bubblesort', help='BubbleSort algorithm', action='store_true')
-    sort_group.add_argument('-cocktailsort', help='Cocktail algorithm', action='store_true')
-    sort_group.add_argument('-cyclesort', help='CycleSort algorithm', action='store_true')
-    sort_group.add_argument('-gnomesort', help='GnomeSort algorithm', action='store_true')
-    sort_group.add_argument('-heapsort', help='HeapSort algorithm', action='store_true')
-    sort_group.add_argument('-insertionsort', help='InsertionSort algorithm', action='store_true')
-    sort_group.add_argument('-mergesort', help='MergeSort algorithm', action='store_true')
-    sort_group.add_argument('-quicksort', help='QuickSort algorithm', action='store_true')
-    sort_group.add_argument('-radixsort', help='RadixSort algorithm', action='store_true')
-    sort_group.add_argument('-selectionsort', help='SelectionSort algorithm', action='store_true')
-    sort_group.add_argument('-shellsort', help='ShellSort algorithm', action='store_true')
-    sort_group.add_argument('-stoogesort', help='StoogeSort algorithm', action='store_true')
+    for key, value in util.SORTING_ALGORITHMS.items():
+        sort_group.add_argument('-'+key, help=value[1], action='store_true')
 
-    search_group = parser.add_argument_group('Searching algorithms (Required)')
-    search_group.add_argument('-binarysearch', help='Binary Search algorithm', action='store_true')
+    # TODO: offer a pager list of the available algorithms. It makes
+    # the parser to long. And future new algorithms (i.e Search Algorithms will have no place)
+    lang_group = parser.add_argument_group('Supported languages (Optional) defaults to Python')
+    for key, value in util.SUPPORTED_LANGUAGES.items():
+        lang_group.add_argument('-'+key, help=value[1], action='store_true')
 
     return parser
 
-def main():
+def algoCLI():
     parser = get_parser()
     args = vars(parser.parse_args())
 
-    # TODO: Check if user asked for -list or -h or something else
-    if args['list']:
-        show_available_algorithms()
-        return
-
-    chosen_language = check_for_language_flag(args)
+    chosen_language = get_language_from_parser(args)
     chosen_algorithm = get_algorithm_from_parser(args)
 
-    if argument_error_checker(chosen_language, chosen_algorithm):
-        # TODO: Need to get think about how to call the correct language/algorithm
-        print_algorithm_to_cli(chosen_algorithm)
+    if no_error_in_arguments(chosen_language, chosen_algorithm):
+        data_handler = DataHandler(chosen_algorithm, chosen_language)
+        #print(f'Language: {chosen_language}')
+        #print(f'Algorithm: {chosen_algorithm}')
+        #print('No error')
+    else:
+        exit(1)
+
+
 
 
 if __name__ == '__main__':
-    # TODO: Handle errors
-    # TODO: Expand to other languages (need to refactor the file structure (folder per language))
-    main()
+    algoCLI()
