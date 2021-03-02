@@ -6,6 +6,9 @@ algo-CLI
 
 - [x] Handle command line arguments
 - [x] `algocli -python -quicksort` or `algocli -cpp -quicksort` cli argument for language of choice
+- [x] Handle case of losing first line of output (-haskell -radixsort) (-go -radixsort)
+- [ ] Replace the =={header}== line in output
+- [ ] Handle case where the algorithm is not found (-rust -radixsort)
 - [ ] Show algorithm in pager
 - [ ] Add color to the syntax in output code
 - [ ] Make `-l` argument that shows a list of the algorithms sorted by complexities

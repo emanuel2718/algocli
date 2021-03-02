@@ -10,11 +10,11 @@ import requests
 import util
 from bs4 import BeautifulSoup
 
-STOP_FLAG = '{{out}}'
+STOP_FLAGS = ['{{out}}', 'Output:']
 
 
 class DataHandler:
-    def __init__(self, algorithm, language='Python'):
+    def __init__(self, algorithm, language):
         self.language = language
         self.algorithm_name = algorithm
 
@@ -27,15 +27,26 @@ class DataHandler:
         self.raw_algorithm_code = self._get_raw_algorithm_code()
 
         self.clean_code = '\n'.join(self._format_code_for_output())
+        self._print_code_to_console()
+
+    def _print_code_to_console(self):
+        print('\n-------------------------------------------------------------\n')
         print(self.clean_code)
+        print('\n-------------------------------------------------------------\n')
+
+    def get_replacement_chars(self, line):
+        return {f'<lang {self.language}>': f'{line.split(">")[-1]}',
+                '}</lang>': '}',
+                '</pre>': '}',
+                '</lang>': f'{line[:-7]}'
+                }
 
     def _remove_unwated_chars(self, line):
-        replacement_chars = self.get_replacement_chars()
+        replacement_chars = self.get_replacement_chars(line)
         for key in replacement_chars.keys():
-            if line.startswith('<lang'):
-                return line.split('>')[1]
-            elif line.endswith('</lang'):
-                return line.split('<')[0]
+            if line.startswith(key) or line.endswith(key):
+                return self.get_replacement_chars(line)[key]
+                #return replacement_chars[key]
         return line
 
     def _format_code_for_output(self):
@@ -43,7 +54,7 @@ class DataHandler:
         code = self.raw_algorithm_code.split('\n')
 
         for line in code:
-            if line == STOP_FLAG:
+            if line in STOP_FLAGS:
                 return result
             else:
                 line = self._remove_unwated_chars(line)
@@ -51,13 +62,8 @@ class DataHandler:
 
         return result
 
-    def get_replacement_chars(self):
-        return {f'<lang {self.language}': '',
-                '}</lang': '}'
-                }
-
     def _get_data(self):
-        url = f'https://rosettacode.org/wiki/{self.fixed_algorithm_name}'
+        url = f'https://rosettacode.org/wiki/Sorting_algorithms/{self.fixed_algorithm_name}'
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
         return soup.find(id='toc')
@@ -160,12 +166,17 @@ def algoCLI():
     args = vars(parser.parse_args())
 
     chosen_language = get_language_from_parser(args)
-    chosen_algorithm = get_algorithm_from_parser(args)
+    if chosen_language is None:
+        print('Warning: No language flag was provided. Using default language: Python')
+        chosen_language = 'python'
 
-    if no_error_in_arguments(chosen_language, chosen_algorithm):
-        data_handler = DataHandler(chosen_algorithm, chosen_language)
-    else:
-        exit(1)
+    chosen_algorithm = get_algorithm_from_parser(args)
+    if chosen_algorithm is None:
+        print('Error: Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
+        sys.exit(1)
+
+    data_handler = DataHandler(chosen_algorithm, chosen_language)
+
 
 
 if __name__ == '__main__':
