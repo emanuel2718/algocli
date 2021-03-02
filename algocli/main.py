@@ -10,18 +10,79 @@ import requests
 import util
 from bs4 import BeautifulSoup
 
+STOP_FLAG = '{{out}}'
+
 
 class DataHandler:
-    def __init__(self, algorithm, language=None):
-        self.algorithm = algorithm
+    def __init__(self, algorithm, language='Python'):
         self.language = language
+        self.algorithm_name = algorithm
 
-        self.fixed_algorithm = self.get_fixed_algorithm(self.algorithm)
-        self.fixed_language = self.get_fixed_language(self.language)
-        print(self.fixed_language)
+        self.fixed_language = self.get_fixed_language()
+        self.fixed_algorithm_name = self.get_fixed_algorithm_name()
+
+        self.data = self._get_data()
+
+        self.section_number, self.formatted_language = self._get_section_and_language()
+        self.raw_algorithm_code = self._get_raw_algorithm_code()
+
+        self.clean_code = '\n'.join(self._format_code_for_output())
+        print(self.clean_code)
 
 
-    def get_fixed_algorithm(self, algo):
+    def _remove_unwated_chars(self, line):
+        replacement_chars = self.get_replacement_chars()
+        for key in replacement_chars.keys():
+            if line.startswith('<lang'):
+                return line.split('>')[1]
+            elif line.endswith('</lang'):
+                return line.split('<')[0]
+        return line
+
+    def _format_code_for_output(self):
+        result = []
+        code = self.raw_algorithm_code.split('\n')
+
+        for line in code:
+            if line == STOP_FLAG:
+                return result
+            else:
+                line = self._remove_unwated_chars(line)
+                result.append(line)
+
+        return result
+
+    def get_replacement_chars(self):
+        return {f'<lang {self.language}' : '',
+                '}</lang': '}'
+                }
+
+    def _get_data(self):
+        url = f'https://rosettacode.org/wiki/{self.fixed_algorithm_name}'
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
+        return soup.find(id='toc')
+
+    def _get_section_and_language(self):
+        for category in self.data('li'):
+            current_language = category.find('a')['href'].lstrip('#')
+            if current_language.lower() == self.fixed_language.lower():
+                section_number = str(category).split('"')[1].split('-')[-1]
+                formatted_language = category.find('span', {'class': 'toctext'}).text
+                return section_number, formatted_language
+        return None, None
+
+    def _get_raw_algorithm_code(self):
+        code_url = (f'https://rosettacode.org/mw/index.php?title=Sorting_algorithms/'
+                    f'{self.fixed_algorithm_name}&action=edit&section={self.section_number}')
+        code_page = requests.get(code_url)
+        soup = BeautifulSoup(code_page.content, 'html.parser')
+
+        return str(soup.find('textarea').text)
+
+
+
+    def get_fixed_algorithm_name(self):
         ''' The rosettacode page address must contain the sorting algorithm in
             a specific format. For example, -insertionsort must appear as Insertion_sort
 
@@ -29,16 +90,23 @@ class DataHandler:
         :return formatted algorithm string (i.e Selection_sort)
         '''
         for key, value in util.SORTING_ALGORITHMS.items():
-            if algo == key:
+            if self.algorithm_name == key:
                 return value[0]
         return None
 
-    def get_fixed_language(self, lang):
-        # Python is the default language if no language flag was given
-        if lang is None:
+    def get_fixed_language(self):
+        ''' To get the data some language are reprensented in different in the
+            rosettacode website. For example, C++ is reprenseted as C.2B.2B in the page source
+
+            Python is the default language if no language flag was given
+
+        :param algo: the language flag string (i.e csharp)
+        :return formatted language string (i.e C.23)
+        '''
+        if self.language is None:
             return 'Python'
         for key, value in util.SUPPORTED_LANGUAGES.items():
-            if lang == key:
+            if self.language == key:
                 return value[0]
         return None
 

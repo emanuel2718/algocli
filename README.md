@@ -6,6 +6,8 @@ algoCLI
 
 - [x] Handle command line arguments
 - [x] `algocli -python -quicksort` or `algocli -cpp -quicksort` cli argument for language of choice
+- [ ] Show algorithm in pager
+- [ ] Add color to the syntax in output code
 - [ ] Make `-l` argument that shows a list of the algorithms sorted by complexities
 - [ ] Fix quicksort algorithm bug with list splicing
 - [ ] Add C++ and Java algorithms
