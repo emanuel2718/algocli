@@ -35,10 +35,11 @@ class DataHandler:
         print('\n-------------------------------------------------------------\n')
 
     def get_replacement_chars(self, line):
-        return {f'<lang {self.language}>': f'{line.split(">")[-1]}',
+        return {f'<lang': f'{line.split(">")[-1]}',
                 '}</lang>': '}',
                 '</pre>': '}',
-                '</lang>': f'{line[:-7]}'
+                '</lang>': f'{line[:-7]}',
+                '=={{header': ''
                 }
 
     def _remove_unwated_chars(self, line):
