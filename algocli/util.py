@@ -9,28 +9,28 @@ NLOGNSQUARED = 'O(NLOG(N)\u00b2)'
 CUBIC = 'O(N\u00b3)'
 NFACTORIAL = 'N * N!'
 
-def print_algorithm_info(algorithm=None, complexity=None):
-    if algorithm is not None:
-        return (f'Algorithm: {algorithm}\n'
-                f'Complexity: {complexity}\n')
-
-
-
-information = {"binarysearch": print_algorithm_info('Binary Search', LOGARITHMIC),
-               "bogosort": print_algorithm_info('Bogo Sort', NFACTORIAL),
-               "bubblesort": print_algorithm_info('Bubble Sort', CUADRATIC),
-               "cocktailsort": print_algorithm_info('Cocktail Sort', CUADRATIC),
-               "cyclesort": print_algorithm_info('Cycle Sort', CUADRATIC),
-               "gnomesort": print_algorithm_info('Gnome Sort', CUADRATIC),
-               "heapsort": print_algorithm_info('Heap Sort', NLOGN),
-               "insertionsort": print_algorithm_info('Insertion Sort', LINEAR),
-               "mergesort": print_algorithm_info('Merge Sort', NLOGN),
-               "quicksort":     print_algorithm_info('Quick Sort', NLOGN),
-               "radixsort":     print_algorithm_info('Radix Sort', NK),
-               "selectionsort": print_algorithm_info('Selection Sort', CUADRATIC),
-               "shellsort": print_algorithm_info('Shell Sort', NLOGNSQUARED),
-               "stoogesort": print_algorithm_info('Stooge Sort', CUADRATIC)
-               }
+# def print_algorithm_info(algorithm=None, complexity=None):
+#    if algorithm is not None:
+#        return (f'Algorithm: {algorithm}\n'
+#                f'Complexity: {complexity}\n')
+#
+#
+#
+# information = {"binarysearch": print_algorithm_info('Binary Search', LOGARITHMIC),
+#               "bogosort": print_algorithm_info('Bogo Sort', NFACTORIAL),
+#               "bubblesort": print_algorithm_info('Bubble Sort', CUADRATIC),
+#               "cocktailsort": print_algorithm_info('Cocktail Sort', CUADRATIC),
+#               "cyclesort": print_algorithm_info('Cycle Sort', CUADRATIC),
+#               "gnomesort": print_algorithm_info('Gnome Sort', CUADRATIC),
+#               "heapsort": print_algorithm_info('Heap Sort', NLOGN),
+#               "insertionsort": print_algorithm_info('Insertion Sort', LINEAR),
+#               "mergesort": print_algorithm_info('Merge Sort', NLOGN),
+#               "quicksort":     print_algorithm_info('Quick Sort', NLOGN),
+#               "radixsort":     print_algorithm_info('Radix Sort', NK),
+#               "selectionsort": print_algorithm_info('Selection Sort', CUADRATIC),
+#               "shellsort": print_algorithm_info('Shell Sort', NLOGNSQUARED),
+#               "stoogesort": print_algorithm_info('Stooge Sort', CUADRATIC)
+#               }
 
 
 ''' The keys in this dictionary will represent the command line arguments that the user
@@ -75,7 +75,7 @@ SORTING_ALGORITHMS = {
 # TODO: Fix the first entry of the values it must match the page source name!!!
 SUPPORTED_LANGUAGES = {
     'actionscript': ['ActionScript', 'Show algorithm in Actionscript'],
-    'ada' : ['Ada', 'Show algorithm in Ada'],
+    'ada': ['Ada', 'Show algorithm in Ada'],
     'algol68': ['ALGOL_68', 'Show algorithm in ALGOL68'],
     'applescript': ['AppleScript', 'Show algorithm in Applescript'],
     'arm': ['ARM_Assembly', 'Show algorithm in ARM Assembly'],

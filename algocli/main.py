@@ -29,7 +29,6 @@ class DataHandler:
         self.clean_code = '\n'.join(self._format_code_for_output())
         print(self.clean_code)
 
-
     def _remove_unwated_chars(self, line):
         replacement_chars = self.get_replacement_chars()
         for key in replacement_chars.keys():
@@ -53,7 +52,7 @@ class DataHandler:
         return result
 
     def get_replacement_chars(self):
-        return {f'<lang {self.language}' : '',
+        return {f'<lang {self.language}': '',
                 '}</lang': '}'
                 }
 
@@ -68,19 +67,19 @@ class DataHandler:
             current_language = category.find('a')['href'].lstrip('#')
             if current_language.lower() == self.fixed_language.lower():
                 section_number = str(category).split('"')[1].split('-')[-1]
-                formatted_language = category.find('span', {'class': 'toctext'}).text
+                formatted_language = category.find(
+                    'span', {'class': 'toctext'}).text
                 return section_number, formatted_language
         return None, None
 
     def _get_raw_algorithm_code(self):
-        code_url = (f'https://rosettacode.org/mw/index.php?title=Sorting_algorithms/'
-                    f'{self.fixed_algorithm_name}&action=edit&section={self.section_number}')
+        code_url = (
+            f'https://rosettacode.org/mw/index.php?title=Sorting_algorithms/'
+            f'{self.fixed_algorithm_name}&action=edit&section={self.section_number}')
         code_page = requests.get(code_url)
         soup = BeautifulSoup(code_page.content, 'html.parser')
 
         return str(soup.find('textarea').text)
-
-
 
     def get_fixed_algorithm_name(self):
         ''' The rosettacode page address must contain the sorting algorithm in
@@ -117,11 +116,13 @@ def get_language_from_parser(args):
             return lang
     return None
 
+
 def get_algorithm_from_parser(args):
     for key, value in args.items():
         if key in util.SORTING_ALGORITHMS.keys() and value:
             return key
     return None
+
 
 def no_error_in_arguments(lang, algo):
     if lang is None:
@@ -132,22 +133,27 @@ def no_error_in_arguments(lang, algo):
         return False
     return True
 
+
 def get_parser():
-    parser = argparse.ArgumentParser(description='Print algorithms to the command line',
-                                     usage='algocli [-h] -language -algorithm',
-                                     formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description='Print algorithms to the command line',
+        usage='algocli [-h] -language -algorithm',
+        formatter_class=argparse.RawTextHelpFormatter)
 
     sort_group = parser.add_argument_group('Sorting algorithms (Required)')
     for key, value in util.SORTING_ALGORITHMS.items():
-        sort_group.add_argument('-'+key, help=value[1], action='store_true')
+        sort_group.add_argument('-' + key, help=value[1], action='store_true')
 
     # TODO: offer a pager list of the available algorithms. It makes
-    # the parser to long. And future new algorithms (i.e Search Algorithms will have no place)
-    lang_group = parser.add_argument_group('Supported languages (Optional) defaults to Python')
+    # the parser to long. And future new algorithms (i.e Search Algorithms
+    # will have no place)
+    lang_group = parser.add_argument_group(
+        'Supported languages (Optional) defaults to Python')
     for key, value in util.SUPPORTED_LANGUAGES.items():
-        lang_group.add_argument('-'+key, help=value[1], action='store_true')
+        lang_group.add_argument('-' + key, help=value[1], action='store_true')
 
     return parser
+
 
 def algoCLI():
     parser = get_parser()
@@ -158,13 +164,8 @@ def algoCLI():
 
     if no_error_in_arguments(chosen_language, chosen_algorithm):
         data_handler = DataHandler(chosen_algorithm, chosen_language)
-        #print(f'Language: {chosen_language}')
-        #print(f'Algorithm: {chosen_algorithm}')
-        #print('No error')
     else:
         exit(1)
-
-
 
 
 if __name__ == '__main__':
