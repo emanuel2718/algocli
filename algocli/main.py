@@ -9,6 +9,7 @@ import argparse
 import requests
 import util
 from bs4 import BeautifulSoup
+from __init__ import __version__
 
 STOP_FLAGS = ['{{out}}', 'Output:']
 
@@ -30,9 +31,13 @@ class DataHandler:
         self._print_code_to_console()
 
     def _print_code_to_console(self):
-        print('\n-------------------------------------------------------------\n')
-        print(self.clean_code)
-        print('\n-------------------------------------------------------------\n')
+        # No modifications done to the raw algorithm means no match was found for that specific language/algorithm
+        if self.clean_code == self.raw_algorithm_code:
+            _print_error(f'No results found for {self.language} using {self.algorithm_name}')
+        else:
+            print('\n-------------------------------------------------------------\n')
+            print(self.clean_code)
+            print('\n-------------------------------------------------------------\n')
 
     def get_replacement_chars(self, line):
         return {f'<lang': f'{line.split(">")[-1]}',
@@ -48,7 +53,6 @@ class DataHandler:
         for key in replacement_chars.keys():
             if line.startswith(key) or line.endswith(key):
                 return self.get_replacement_chars(line)[key]
-                #return replacement_chars[key]
         return line
 
     def _format_code_for_output(self):
@@ -125,6 +129,18 @@ class DataHandler:
         return None
 
 
+def _print_error(err):
+    print(f'[ERROR] {err}')
+
+def _print_ok(msg):
+    print(f'[OK]: {msg}')
+
+def _print_warning(msg):
+    print(f'[WARNING] {msg}')
+
+def _print_debug(msg):
+    print(f'[DEBUG] {msg}')
+
 def get_language_from_parser(args):
     for lang in util.SUPPORTED_LANGUAGES.keys():
         if args[lang]:
@@ -138,22 +154,13 @@ def get_algorithm_from_parser(args):
             return key
     return None
 
-
-def no_error_in_arguments(lang, algo):
-    if lang is None:
-        print('Warning: No language flag was provided. Using default language: Python')
-
-    if lang is not None and algo is None:
-        print('Error: Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
-        return False
-    return True
-
-
 def get_parser():
     parser = argparse.ArgumentParser(
         description='Print algorithms to the command line',
         usage='algocli [-h] -language -algorithm',
         formatter_class=argparse.RawTextHelpFormatter)
+
+    parser.add_argument('-v', '--version', help='displays the current version of algocli', action='store_true')
 
     lang_group = parser.add_argument_group(
         'Supported languages (Optional) defaults to Python')
@@ -164,23 +171,25 @@ def get_parser():
     for key, value in util.ALGORITHMS.items():
         algorithm_group.add_argument('-' + key, help=value[1], action='store_true')
 
-
     return parser
-
 
 def algoCLI():
     parser = get_parser()
     args = vars(parser.parse_args())
 
+    if args['version']:
+        print(f'algocli {__version__}')
+        return
+
     chosen_language = get_language_from_parser(args)
     if chosen_language is None:
-        print('Warning: No language flag was provided. Using default language: Python')
+        _print_warning('No language flag was provided. Using default language: Python')
         chosen_language = 'python'
 
     chosen_algorithm = get_algorithm_from_parser(args)
     if chosen_algorithm is None:
-        print('Error: Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
-        sys.exit(1)
+        _print_error('Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
+        return
 
     data_handler = DataHandler(chosen_algorithm, chosen_language)
 
