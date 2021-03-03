@@ -9,6 +9,9 @@ import argparse
 import requests
 import util
 from bs4 import BeautifulSoup
+from pygments import highlight
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters import TerminalFormatter
 from __init__ import __version__
 
 STOP_FLAGS = ['{{out}}', 'Output:']
@@ -38,7 +41,11 @@ class DataHandler:
                 f'No results found for {self.language} using {self.algorithm_name}')
         else:
             print('\n-------------------------------------------------------------\n')
-            print(self.clean_code)
+            lexer = get_lexer_by_name(self.language, stripall=True)
+            formatter = TerminalFormatter(bg='dark', linenos=False)
+            result = highlight(self.clean_code, lexer, formatter)
+            print(result)
+            #print(self.clean_code)
             print('\n-------------------------------------------------------------\n')
 
     def get_replacement_chars(self, line):
