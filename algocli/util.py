@@ -1,52 +1,14 @@
-# Complexities
-CONSTANT = 'O(1)'
-LOGARITHMIC = 'O(log(N))'
-LINEAR = 'O(N)'
-NK = 'O(NK)'
-NLOGN = 'O(Nlog(N))'
-CUADRATIC = 'O(N\u00b2)'
-NLOGNSQUARED = 'O(NLOG(N)\u00b2)'
-CUBIC = 'O(N\u00b3)'
-NFACTORIAL = 'N * N!'
-
-# def print_algorithm_info(algorithm=None, complexity=None):
-#    if algorithm is not None:
-#        return (f'Algorithm: {algorithm}\n'
-#                f'Complexity: {complexity}\n')
-#
-#
-#
-# information = {"binarysearch": print_algorithm_info('Binary Search', LOGARITHMIC),
-#               "bogosort": print_algorithm_info('Bogo Sort', NFACTORIAL),
-#               "bubblesort": print_algorithm_info('Bubble Sort', CUADRATIC),
-#               "cocktailsort": print_algorithm_info('Cocktail Sort', CUADRATIC),
-#               "cyclesort": print_algorithm_info('Cycle Sort', CUADRATIC),
-#               "gnomesort": print_algorithm_info('Gnome Sort', CUADRATIC),
-#               "heapsort": print_algorithm_info('Heap Sort', NLOGN),
-#               "insertionsort": print_algorithm_info('Insertion Sort', LINEAR),
-#               "mergesort": print_algorithm_info('Merge Sort', NLOGN),
-#               "quicksort":     print_algorithm_info('Quick Sort', NLOGN),
-#               "radixsort":     print_algorithm_info('Radix Sort', NK),
-#               "selectionsort": print_algorithm_info('Selection Sort', CUADRATIC),
-#               "shellsort": print_algorithm_info('Shell Sort', NLOGNSQUARED),
-#               "stoogesort": print_algorithm_info('Stooge Sort', CUADRATIC)
-#               }
-
-
-''' The keys in this dictionary will represent the command line arguments that the user
-    inputs to select the desired algorithm:
-        i.e algocli -insertionsort
-
-    The values need to match the formatting of rosettacode sorting page address tail because it varies
-    from sorter to sorter. It's also case sensitive. For example:
-        Insertion sort: https://rosettacode.org/wiki/Sorting_algorithms/Insertion_sort <---
-        Heap sort: https://rosettacode.org/wiki/Sorting_algorithms/Heapsort <----
 '''
+Utility data structures
+Written by Emanuel Ramirez (emanuel2718@gmail.com)
+'''
+
+
 ALGORITHMS = {
     'avltrees': ['AVL_tree', 'AVL Trees'],
-    'binarysearch': ['Binary_search', 'Binary Search algorithm'],
     'base64': ['Base64_decode_data', 'Decode Base64 data'],
     'beadsort': ['Sorting_algorithms/Bead_sort', 'Bead Sort algorithm'],
+    'binarysearch': ['Binary_search', 'Binary Search algorithm'],
     'bogosort': ['Sorting_algorithms/Bogo_sort', 'Bogo Sort algorithm'],
     'bubblesort': ['Sorting_algorithms/Bubble_sort', 'Bubble Sort algorithm'],
     'caesarcipher': ['Sorting_algorithms/Caesar_cipher', 'Caesar Cipher'],
@@ -54,22 +16,60 @@ ALGORITHMS = {
     'combsort': ['Sorting_algorithms/Comb_sort', 'Comb Sort algorithm'],
     'countingsort': ['Sorting_algorithms/Counting_sort', 'Counting Sort algorithm'],
     'cyclesort': ['Sorting_algorithms/Cycle_sort', 'Cycle Sort algorithm'],
+    'damm': ['Damm_algorithm', 'Damm algorithm'],
+    'dijkstra': ['Dijkstra%27s_algorithm', 'Dijkstra algorithm'],
     'e': ['Calculating_the_value_of_e', 'Calculate the value of e'],
-    'fileexist': ['Check_that_file_exists', 'Check if a given file exists or not'],
+    'eulermethod': ['Euler_method', 'Euler method'],
+    'evolutionary': ['Evolutionary_algorithm', 'Evolutionary algorithm'],
+    'factorial': ['Factorial', 'Calculate factorials'],
+    'factorions': ['Factorions', 'Calculate factorions'],
+    'fft': ['Fast_Fourier_transform', 'Fast Fourier Transforms'],
+    'fib': ['Fibonacci_sequence', 'Fibonacci Sequence'],
+    'fibnstep': ['Fibonacci_n-step_number_sequences', 'Fibonacci N-step Number Sequence'],
+    'fileexists': ['Check_that_file_exists', 'Check if a given file exists or not'],
+    'fizzbuzz': ['FizzBuzz', 'FizzBuzz'],
+    'floydwarshall': ['Floyd-Warshall_algorithm', 'Floy Warshall algorithm'],
     'gnomesort': ['Sorting_algorithms/Gnome_sort', 'Gnome Sort algorithm'],
+    'hammingnumbers': ['Hamming_numbers', 'Hamming numbers'],
     'heapsort': ['Sorting_algorithms/Heapsort', 'Heap Sort algorithm'],
+    'huffman': ['Huffman_coding', 'Huffman coding'],
     'insertionsort': ['Sorting_algorithms/Insertion_sort', 'Insertion Sort algorithm'],
+    'isaac': ['The_ISAAC_Cipher', 'ISAAC Cipher'],
+    'knapsack': ['Knapsack_problem/0-1', 'Knapsack Problem 0-1'],
+    'knapsackbound': ['Knapsack_problem/Bounded', 'Knapsack Problem Bounded'],
+    'knapsackcont': ['Knapsack_problem/Continous', 'Knapsack Problem Continous'],
+    'knapsackunbound': ['Knapsack_problem/Unbounded', 'Knapsack Problem Unbounded'],
+    'kolakoski': ['Kolakoski_sequence', 'Kolakoski Sequence'],
+    'mandelbrot': ['Mandelbrot_set', 'Mandelbrot Set'],
+    'mazegen': ['Maze_generation', 'Maze Generation'],
+    'mazesolve': ['Maze_solving', 'Maze Solving'],
+    'md4': ['MD4', 'How to use MD4'],
+    'md5': ['MD5', 'How to use MD5'],
+    'md5imp': ['MD5/Implementation', 'MD5 Algorithm implementation'],
     'mergesort': ['Sorting_algorithms/Merge_sort', 'Merge Sort algorithm'],
+    'naturalsort': ['Natural_sorting', 'Natural Sorting'],
+    'nqueen': ['N-queens_problem', 'N-Queens Problem'],
     'pancakesort': ['Sorting_algorithms/Pancake_sort', 'Pancake Sort algorithm'],
     'patiencesort': ['Sorting_algorithms/Patience_sort', 'Patience Sort algorithm'],
     'permutationsort': ['Sorting_algorithms/Permutation_sort', 'Permutation Sort algorithm'],
+    'quickselect': ['Quickselect_algorithm', 'Quickselect Algorithm'],
     'quicksort': ['Sorting_algorithms/Quicksort', 'Quick Sort algorithm'],
     'radixsort': ['Sorting_algorithms/Radix_sort', 'Radix Sort algorithm'],
+    'recaman': ['Recaman%27s_sequence', 'Recaman Sequence'],
+    'regex': ['Regular_expressions', 'Simple Regular Expressions'],
+    'rot13': ['Rot-13', 'Rot-13 Algorithm'],
+    'rsa': ['RSA_code', 'RSA code'],
     'selectionsort': ['Sorting_algorithms/Selection_sort', 'Selection Sort algorithm'],
+    'sexyprime': ['Sexy_primes', 'Sexy primes'],
+    'sha1': ['SHA-1', 'SHA-1 Algorithm'],
+    'sha256': ['SHA-256', 'SHA-256 Algorithm'],
     'shellsort': ['Sorting_algorithms/Shell_sort', 'Shell Sort algorithm'],
+    'sieve': ['Sieve_of_Eratosthenes', 'Sieve of Eratosthenes Algorithm'],
     'sleepsort': ['Sorting_algorithms/Sleep_sort', 'Sleep Sort algorithm'],
     'stoogesort': ['Sorting_algorithms/Stooge_sort', 'Stooge Sort algorithm'],
-    'strandsort': ['Sorting_algorithms/Strand_sort', 'Strand Sort algorithm']
+    'strandsort': ['Sorting_algorithms/Strand_sort', 'Strand Sort algorithm'],
+    'subcipher': ['Substitution_cipher', 'Substitution Cipher'],
+    'toposort': ['Topological_sort', 'Topological Sort Algorithm']
 }
 
 
@@ -98,12 +98,6 @@ ALGORITHMS = {
 #]
 
 
-''' If the user input a language flag in the cli arguments the it will be valid if it exists
-    as in the keys of this dictionary and if the value language is found for the requested sorter.
-
-    Supported languages. Some lanagues (like Java) in different sorter pages will appear as java or java5
-'''
-# TODO: Fix the first entry of the values it must match the page source name!!!
 SUPPORTED_LANGUAGES = {
     'actionscript': ['ActionScript', 'Actionscript'],
     'ada': ['Ada', 'Ada'],

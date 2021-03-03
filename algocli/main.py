@@ -39,7 +39,8 @@ class DataHandler:
                 '}</lang>': '}',
                 '</pre>': '}',
                 '</lang>': f'{line[:-7]}',
-                '=={{header': ''
+                '=={{header': '',
+                '===': f'\n{line}\n'
                 }
 
     def _remove_unwated_chars(self, line):
@@ -154,17 +155,15 @@ def get_parser():
         usage='algocli [-h] -language -algorithm',
         formatter_class=argparse.RawTextHelpFormatter)
 
-    algorithm_group = parser.add_argument_group('Supported Algorithms (Required)')
-    for key, value in util.ALGORITHMS.items():
-        algorithm_group.add_argument('-' + key, help=value[1], action='store_true')
-
-    # TODO: offer a pager list of the available algorithms. It makes
-    # the parser to long. And future new algorithms (i.e Search Algorithms
-    # will have no place)
     lang_group = parser.add_argument_group(
         'Supported languages (Optional) defaults to Python')
     for key, value in util.SUPPORTED_LANGUAGES.items():
         lang_group.add_argument('-' + key, help=value[1], action='store_true')
+
+    algorithm_group = parser.add_argument_group('Supported Algorithms (Required)')
+    for key, value in util.ALGORITHMS.items():
+        algorithm_group.add_argument('-' + key, help=value[1], action='store_true')
+
 
     return parser
 
