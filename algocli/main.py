@@ -63,8 +63,17 @@ class DataHandler:
 
         return result
 
+    def _get_url(self):
+        return f'https://rosettacode.org/wiki/{self.fixed_algorithm_name}'
+
+    def _get_code_url(self):
+        return (
+            f'https://rosettacode.org/mw/index.php?title={self.fixed_algorithm_name}'
+            f'&action=edit&section={self.section_number}'
+        )
+
     def _get_data(self):
-        url = f'https://rosettacode.org/wiki/Sorting_algorithms/{self.fixed_algorithm_name}'
+        url = self._get_url()
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
         return soup.find(id='toc')
@@ -80,9 +89,7 @@ class DataHandler:
         return None, None
 
     def _get_raw_algorithm_code(self):
-        code_url = (
-            f'https://rosettacode.org/mw/index.php?title=Sorting_algorithms/'
-            f'{self.fixed_algorithm_name}&action=edit&section={self.section_number}')
+        code_url = self._get_code_url()
         code_page = requests.get(code_url)
         soup = BeautifulSoup(code_page.content, 'html.parser')
 
@@ -95,7 +102,7 @@ class DataHandler:
         :param algo: the algorithm flag string (i.e selectionsort)
         :return formatted algorithm string (i.e Selection_sort)
         '''
-        for key, value in util.SORTING_ALGORITHMS.items():
+        for key, value in util.ALGORITHMS.items():
             if self.algorithm_name == key:
                 return value[0]
         return None
@@ -126,7 +133,7 @@ def get_language_from_parser(args):
 
 def get_algorithm_from_parser(args):
     for key, value in args.items():
-        if key in util.SORTING_ALGORITHMS.keys() and value:
+        if key in util.ALGORITHMS.keys() and value:
             return key
     return None
 
@@ -147,9 +154,9 @@ def get_parser():
         usage='algocli [-h] -language -algorithm',
         formatter_class=argparse.RawTextHelpFormatter)
 
-    sort_group = parser.add_argument_group('Sorting algorithms (Required)')
-    for key, value in util.SORTING_ALGORITHMS.items():
-        sort_group.add_argument('-' + key, help=value[1], action='store_true')
+    algorithm_group = parser.add_argument_group('Supported Algorithms (Required)')
+    for key, value in util.ALGORITHMS.items():
+        algorithm_group.add_argument('-' + key, help=value[1], action='store_true')
 
     # TODO: offer a pager list of the available algorithms. It makes
     # the parser to long. And future new algorithms (i.e Search Algorithms

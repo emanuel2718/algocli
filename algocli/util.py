@@ -42,29 +42,60 @@ NFACTORIAL = 'N * N!'
         Insertion sort: https://rosettacode.org/wiki/Sorting_algorithms/Insertion_sort <---
         Heap sort: https://rosettacode.org/wiki/Sorting_algorithms/Heapsort <----
 '''
-SORTING_ALGORITHMS = {
-    'beadsort': ['Bead_sort', 'Bead Sort algorithm'],
-    'bogosort': ['Bogo_sort', 'Bogo Sort algorithm'],
-    'bubblesort': ['Bubble_sort', 'Bubble Sort algorithm'],
-    'cocktailsort': ['Cocktail_sort', 'Cocktail Sort algorithm'],
-    'combsort': ['Comb_sort', 'Comb Sort algorithm'],
-    'countingsort': ['Counting_sort', 'Counting Sort algorithm'],
-    'cyclesort': ['Cycle_sort', 'Cycle Sort algorithm'],
-    'gnomesort': ['Gnome_sort', 'Gnome Sort algorithm'],
-    'heapsort': ['Heapsort', 'Heap Sort algorithm'],
-    'insertionsort': ['Insertion_sort', 'Insertion Sort algorithm'],
-    'mergesort': ['Merge_sort', 'Merge Sort algorithm'],
-    'pancakesort': ['Pancake_sort', 'Pancake Sort algorithm'],
-    'patiencesort': ['Patience_sort', 'Patience Sort algorithm'],
-    'permutationsort': ['Permutation_sort', 'Permutation Sort algorithm'],
-    'quicksort': ['Quicksort', 'Quick Sort algorithm'],
-    'radixsort': ['Radix_sort', 'Radix Sort algorithm'],
-    'selectionsort': ['Selection_sort', 'Selection Sort algorithm'],
-    'shellsort': ['Shell_sort', 'Shell Sort algorithm'],
-    'sleepsort': ['Sleep_sort', 'Sleep Sort algorithm'],
-    'stoogesort': ['Stooge_sort', 'Stooge Sort algorithm'],
-    'strandsort': ['Strand_sort', 'Strand Sort algorithm']
+ALGORITHMS = {
+    'avltrees': ['AVL_tree', 'AVL Trees'],
+    'binarysearch': ['Binary_search', 'Binary Search algorithm'],
+    'base64': ['Base64_decode_data', 'Decode Base64 data'],
+    'beadsort': ['Sorting_algorithms/Bead_sort', 'Bead Sort algorithm'],
+    'bogosort': ['Sorting_algorithms/Bogo_sort', 'Bogo Sort algorithm'],
+    'bubblesort': ['Sorting_algorithms/Bubble_sort', 'Bubble Sort algorithm'],
+    'caesarcipher': ['Sorting_algorithms/Caesar_cipher', 'Caesar Cipher'],
+    'cocktailsort': ['Sorting_algorithms/Cocktail_sort', 'Cocktail Sort algorithm'],
+    'combsort': ['Sorting_algorithms/Comb_sort', 'Comb Sort algorithm'],
+    'countingsort': ['Sorting_algorithms/Counting_sort', 'Counting Sort algorithm'],
+    'cyclesort': ['Sorting_algorithms/Cycle_sort', 'Cycle Sort algorithm'],
+    'e': ['Calculating_the_value_of_e', 'Calculate the value of e'],
+    'fileexist': ['Check_that_file_exists', 'Check if a given file exists or not'],
+    'gnomesort': ['Sorting_algorithms/Gnome_sort', 'Gnome Sort algorithm'],
+    'heapsort': ['Sorting_algorithms/Heapsort', 'Heap Sort algorithm'],
+    'insertionsort': ['Sorting_algorithms/Insertion_sort', 'Insertion Sort algorithm'],
+    'mergesort': ['Sorting_algorithms/Merge_sort', 'Merge Sort algorithm'],
+    'pancakesort': ['Sorting_algorithms/Pancake_sort', 'Pancake Sort algorithm'],
+    'patiencesort': ['Sorting_algorithms/Patience_sort', 'Patience Sort algorithm'],
+    'permutationsort': ['Sorting_algorithms/Permutation_sort', 'Permutation Sort algorithm'],
+    'quicksort': ['Sorting_algorithms/Quicksort', 'Quick Sort algorithm'],
+    'radixsort': ['Sorting_algorithms/Radix_sort', 'Radix Sort algorithm'],
+    'selectionsort': ['Sorting_algorithms/Selection_sort', 'Selection Sort algorithm'],
+    'shellsort': ['Sorting_algorithms/Shell_sort', 'Shell Sort algorithm'],
+    'sleepsort': ['Sorting_algorithms/Sleep_sort', 'Sleep Sort algorithm'],
+    'stoogesort': ['Sorting_algorithms/Stooge_sort', 'Stooge Sort algorithm'],
+    'strandsort': ['Sorting_algorithms/Strand_sort', 'Strand Sort algorithm']
 }
+
+
+#SORTING_ALGORITHMS = [
+#    'beadsort',
+#    'bogosort',
+#    'bubblesort',
+#    'cocktailsort',
+#    'combsort',
+#    'countingsort',
+#    'cyclesort',
+#    'gnomesort',
+#    'heapsort',
+#    'insertionsort',
+#    'mergesort',
+#    'pancakesort',
+#    'patiencesort',
+#    'permutationsort',
+#    'quicksort',
+#    'radixsort',
+#    'selectionsort',
+#    'shellsort',
+#    'sleepsort',
+#    'stoogesort',
+#    'strandsort'
+#]
 
 
 ''' If the user input a language flag in the cli arguments the it will be valid if it exists
