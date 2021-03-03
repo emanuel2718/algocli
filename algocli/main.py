@@ -31,9 +31,11 @@ class DataHandler:
         self._print_code_to_console()
 
     def _print_code_to_console(self):
-        # No modifications done to the raw algorithm means no match was found for that specific language/algorithm
+        # No modifications done to the raw algorithm means no match was found
+        # for that specific language/algorithm
         if self.clean_code == self.raw_algorithm_code:
-            _print_error(f'No results found for {self.language} using {self.algorithm_name}')
+            _print_error(
+                f'No results found for {self.language} using {self.algorithm_name}')
         else:
             print('\n-------------------------------------------------------------\n')
             print(self.clean_code)
@@ -74,8 +76,7 @@ class DataHandler:
     def _get_code_url(self):
         return (
             f'https://rosettacode.org/mw/index.php?title={self.fixed_algorithm_name}'
-            f'&action=edit&section={self.section_number}'
-        )
+            f'&action=edit&section={self.section_number}')
 
     def _get_data(self):
         url = self._get_url()
@@ -132,14 +133,18 @@ class DataHandler:
 def _print_error(err):
     print(f'[ERROR] {err}')
 
+
 def _print_ok(msg):
     print(f'[OK]: {msg}')
+
 
 def _print_warning(msg):
     print(f'[WARNING] {msg}')
 
+
 def _print_debug(msg):
     print(f'[DEBUG] {msg}')
+
 
 def get_language_from_parser(args):
     for lang in util.SUPPORTED_LANGUAGES.keys():
@@ -154,24 +159,32 @@ def get_algorithm_from_parser(args):
             return key
     return None
 
+
 def get_parser():
     parser = argparse.ArgumentParser(
         description='Print algorithms to the command line',
         usage='algocli [-h] -language -algorithm',
         formatter_class=argparse.RawTextHelpFormatter)
 
-    parser.add_argument('-v', '--version', help='displays the current version of algocli', action='store_true')
+    parser.add_argument(
+        '-v',
+        '--version',
+        help='displays the current version of algocli',
+        action='store_true')
 
     lang_group = parser.add_argument_group(
         'Supported languages (Optional) defaults to Python')
     for key, value in util.SUPPORTED_LANGUAGES.items():
         lang_group.add_argument('-' + key, help=value[1], action='store_true')
 
-    algorithm_group = parser.add_argument_group('Supported Algorithms (Required)')
+    algorithm_group = parser.add_argument_group(
+        'Supported Algorithms (Required)')
     for key, value in util.ALGORITHMS.items():
-        algorithm_group.add_argument('-' + key, help=value[1], action='store_true')
+        algorithm_group.add_argument(
+            '-' + key, help=value[1], action='store_true')
 
     return parser
+
 
 def algoCLI():
     parser = get_parser()
@@ -183,16 +196,17 @@ def algoCLI():
 
     chosen_language = get_language_from_parser(args)
     if chosen_language is None:
-        _print_warning('No language flag was provided. Using default language: Python')
+        _print_warning(
+            'No language flag was provided. Using default language: Python')
         chosen_language = 'python'
 
     chosen_algorithm = get_algorithm_from_parser(args)
     if chosen_algorithm is None:
-        _print_error('Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
+        _print_error(
+            'Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
         return
 
     data_handler = DataHandler(chosen_algorithm, chosen_language)
-
 
 
 if __name__ == '__main__':
