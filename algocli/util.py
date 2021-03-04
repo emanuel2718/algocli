@@ -9,7 +9,7 @@ ALGORITHMS = {
     'base64': ['Base64_decode_data', 'Decode Base64 data'],
     'beadsort': ['Sorting_algorithms/Bead_sort', 'Bead Sort algorithm'],
     'binarysearch': ['Binary_search', 'Binary Search algorithm'],
-    'bogosort': ['Sorting_algorithms/Bogo_sort', 'Bogo Sort algorithm'],
+    'bogosort': ['Sorting_algorithms/Bogosort', 'Bogo Sort algorithm'],
     'bubblesort': ['Sorting_algorithms/Bubble_sort', 'Bubble Sort algorithm'],
     'caesarcipher': ['Sorting_algorithms/Caesar_cipher', 'Caesar Cipher'],
     'cocktailsort': ['Sorting_algorithms/Cocktail_sort', 'Cocktail Sort algorithm'],

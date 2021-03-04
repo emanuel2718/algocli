@@ -44,11 +44,10 @@ class DataHandler:
         self.output_code = '\n'.join(self._format_code_for_output())
         self._print_code_to_console()
 
-    def _print_banner(self):
-        message = f'{self.formal_algorithm} using {self.formal_language}'
-        print('\n' + '-' * 78)
-        print(message.center(78))
-        print('-' * 78 + '\n')
+    def _print_banner(self, msg):
+        print('\n\n' + '-' * 78)
+        print(msg.center(78))
+        print('-' * 78 + '\n\n')
 
     def _get_colored_output(self):
         from pygments import highlight
@@ -65,9 +64,9 @@ class DataHandler:
             if self.colorize_output:
                 self.output_code = self._get_colored_output()
 
-            self._print_banner()
+            self._print_banner(f'{self.formal_algorithm} using {self.formal_language}')
             print(self.output_code)
-            print('\n' + '' * 78 + '\n')
+            self._print_banner('ALGORITHM OUTPUT ENDS HERE')
 
         # No modifications done to the raw algorithm means no match was found
         # for that specific language/algorithm
