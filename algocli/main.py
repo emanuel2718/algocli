@@ -9,44 +9,71 @@ import argparse
 import requests
 import util
 from bs4 import BeautifulSoup
-from pygments import highlight
-from pygments.lexers import get_lexer_by_name
-from pygments.formatters import TerminalFormatter
 from __init__ import __version__
 
 STOP_FLAGS = ['{{out}}', 'Output:']
 
 
 class DataHandler:
-    def __init__(self, algorithm, language):
+    def __init__(self, algorithm, language, colorized):
+        '''
+            Example variable values:
+                self.language                   =: 'cpp'
+                self.algorithm_name             =: 'insertionsort'
+                self.sanitized_language         =: 'C.2B.2B'
+                self.sanitized_algorithm_name   =: 'Insertion_sort'
+                self.formal_language            =: 'C++'
+                self.formal_algorithm           =: 'Insertion Sort algorithm'
+        '''
         self.language = language
         self.algorithm_name = algorithm
 
-        self.fixed_language = self.get_fixed_language()
-        self.fixed_algorithm_name = self.get_fixed_algorithm_name()
+        self.sanitized_language = self.get_sanitized_language()
+        self.sanitized_algorithm_name = self.get_sanitized_algorithm_name()
+
+        self.formal_language = util.SUPPORTED_LANGUAGES[self.language][1]
+        self.formal_algorithm = util.ALGORITHMS[self.algorithm_name][1]
+
+        self.colorize_output = colorized
 
         self.data = self._get_data()
 
         self.section_number, self.formatted_language = self._get_section_and_language()
         self.raw_algorithm_code = self._get_raw_algorithm_code()
 
-        self.clean_code = '\n'.join(self._format_code_for_output())
+        self.output_code = '\n'.join(self._format_code_for_output())
         self._print_code_to_console()
 
+    def _print_banner(self):
+        message = f'{self.formal_algorithm} using {self.formal_language}'
+        print('\n' + '-' * 78)
+        print(message.center(78))
+        print('-' * 78 + '\n')
+
+    def _get_colored_output(self):
+        from pygments import highlight
+        from pygments.lexers import get_lexer_by_name
+        from pygments.formatters import Terminal256Formatter
+
+        lexer = get_lexer_by_name(self.language, stripall=True)
+        formatter = Terminal256Formatter(bg='dark', linenos=False)
+        return highlight(self.output_code, lexer, formatter)
+
+
     def _print_code_to_console(self):
+        if self.output_code != self.raw_algorithm_code:
+            if self.colorize_output:
+                self.output_code = self._get_colored_output()
+
+            self._print_banner()
+            print(self.output_code)
+            print('\n' + '' * 78 + '\n')
+
         # No modifications done to the raw algorithm means no match was found
         # for that specific language/algorithm
-        if self.clean_code == self.raw_algorithm_code:
+        else:
             _print_error(
                 f'No results found for {self.language} using {self.algorithm_name}')
-        else:
-            print('\n-------------------------------------------------------------\n')
-            lexer = get_lexer_by_name(self.language, stripall=True)
-            formatter = TerminalFormatter(bg='dark', linenos=False)
-            result = highlight(self.clean_code, lexer, formatter)
-            print(result)
-            #print(self.clean_code)
-            print('\n-------------------------------------------------------------\n')
 
     def get_replacement_chars(self, line):
         return {f'<lang': f'{line.split(">")[-1]}',
@@ -78,11 +105,11 @@ class DataHandler:
         return result
 
     def _get_url(self):
-        return f'https://rosettacode.org/wiki/{self.fixed_algorithm_name}'
+        return f'https://rosettacode.org/wiki/{self.sanitized_algorithm_name}'
 
     def _get_code_url(self):
         return (
-            f'https://rosettacode.org/mw/index.php?title={self.fixed_algorithm_name}'
+            f'https://rosettacode.org/mw/index.php?title={self.sanitized_algorithm_name}'
             f'&action=edit&section={self.section_number}')
 
     def _get_data(self):
@@ -94,7 +121,7 @@ class DataHandler:
     def _get_section_and_language(self):
         for category in self.data('li'):
             current_language = category.find('a')['href'].lstrip('#')
-            if current_language.lower() == self.fixed_language.lower():
+            if current_language.lower() == self.sanitized_language.lower():
                 section_number = str(category).split('"')[1].split('-')[-1]
                 formatted_language = category.find(
                     'span', {'class': 'toctext'}).text
@@ -108,7 +135,7 @@ class DataHandler:
 
         return str(soup.find('textarea').text)
 
-    def get_fixed_algorithm_name(self):
+    def get_sanitized_algorithm_name(self):
         ''' The rosettacode page address must contain the sorting algorithm in
             a specific format. For example, -insertionsort must appear as Insertion_sort
 
@@ -120,7 +147,7 @@ class DataHandler:
                 return value[0]
         return None
 
-    def get_fixed_language(self):
+    def get_sanitized_language(self):
         ''' To get the data some language are reprensented in different in the
             rosettacode website. For example, C++ is reprenseted as C.2B.2B in the page source
 
@@ -170,13 +197,19 @@ def get_algorithm_from_parser(args):
 def get_parser():
     parser = argparse.ArgumentParser(
         description='Print algorithms to the command line',
-        usage='algocli [-h] -language -algorithm',
+        usage='algocli [-h] -language -algorithm -color',
         formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument(
         '-v',
         '--version',
         help='displays the current version of algocli',
+        action='store_true')
+
+    parser.add_argument(
+        '-color',
+        '--color',
+        help='enables colorized output algorithm',
         action='store_true')
 
     lang_group = parser.add_argument_group(
@@ -196,6 +229,7 @@ def get_parser():
 def algoCLI():
     parser = get_parser()
     args = vars(parser.parse_args())
+    colorized = False
 
     if args['version']:
         print(f'algocli {__version__}')
@@ -213,7 +247,10 @@ def algoCLI():
             'Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
         return
 
-    data_handler = DataHandler(chosen_algorithm, chosen_language)
+    if args['color']:
+        colorized = True
+
+    data_handler = DataHandler(chosen_algorithm, chosen_language, colorized)
 
 
 if __name__ == '__main__':
