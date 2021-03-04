@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-algocli - Print algorithms to the command line
+algocli - print common algorithms via the command line
 written by Emanuel Ramirez (emanuel2718@gmail.com)
 '''
 
@@ -11,7 +11,9 @@ import util
 from bs4 import BeautifulSoup
 from __init__ import __version__
 
-STOP_FLAGS = ['{{out}}', 'Output:']
+#STOP_FLAGS = ['{{out}}', 'Output:', "'''Library'''"]
+#STOP_FLAGS = ['{{out}}', 'Output:']
+STOP_FLAGS = ['dhflahfklasjfkla']
 
 
 class DataHandler:
@@ -72,15 +74,22 @@ class DataHandler:
         # for that specific language/algorithm
         else:
             _print_error(
-                f'No results found for {self.language} using {self.algorithm_name}')
+                f'No results found for {self.formal_algorithm} using {self.formal_language}')
 
     def get_replacement_chars(self, line):
         return {f'<lang': f'{line.split(">")[-1]}',
                 '}</lang>': '}',
-                '</pre>': '}',
+                '}</pre>': '}',
+                '</pre>': '',
+                '<pre': '',
                 '</lang>': f'{line[:-7]}',
                 '=={{header': '',
-                '===': f'\n{line}\n'
+                '===': f'\n{line}\n',
+                '{{trans': '',
+                '<br>': '',
+                '{{Out}}': '\n=== Output ===',
+                '{{out}}Output': f'\n=== {line.rpartition("}")[-1]} ===',
+                '{{out}}': f'\n==== Output ==='
                 }
 
     def _remove_unwated_chars(self, line):
@@ -195,8 +204,8 @@ def get_algorithm_from_parser(args):
 
 def get_parser():
     parser = argparse.ArgumentParser(
-        description='Print algorithms to the command line',
-        usage='algocli [-h] -language -algorithm -color',
+        description='print common algorithms via the command line',
+        usage='algocli [-h] [-v] [-algorithm] [-language] [-color]',
         formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument(
@@ -208,16 +217,16 @@ def get_parser():
     parser.add_argument(
         '-color',
         '--color',
-        help='enables colorized output algorithm',
+        help='enables colorized algorithms',
         action='store_true')
 
     lang_group = parser.add_argument_group(
-        'supported languages (Optional) defaults to Python')
+        'optional supported languages (Defaults to Python)')
     for key, value in util.SUPPORTED_LANGUAGES.items():
         lang_group.add_argument('-' + key, help=value[1], action='store_true')
 
     algorithm_group = parser.add_argument_group(
-        'supported Algorithms (Required)')
+        'required supported algorithms')
     for key, value in util.ALGORITHMS.items():
         algorithm_group.add_argument(
             '-' + key, help=value[1], action='store_true')

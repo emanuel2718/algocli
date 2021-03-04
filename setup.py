@@ -5,7 +5,7 @@ import algocli
 
 setup(name='algocli',
       version=algocli.__version__,
-      description="Print common known algorithms to the command line",
+      description="Print common algorithms via the command line",
       long_description='',
       classifiers=[
             "Development Status :: 3 - Alpha",

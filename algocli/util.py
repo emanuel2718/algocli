@@ -6,7 +6,7 @@ Written by Emanuel Ramirez (emanuel2718@gmail.com)
 
 ALGORITHMS = {
     'avltrees': ['AVL_tree', 'AVL Trees'],
-    'base64': ['Base64_decode_data', 'Decode Base64 data'],
+    'b64': ['Base64_decode_data', 'Decode Base64 data'],
     'beadsort': ['Sorting_algorithms/Bead_sort', 'Bead Sort algorithm'],
     'binarysearch': ['Binary_search', 'Binary Search algorithm'],
     'bogosort': ['Sorting_algorithms/Bogosort', 'Bogo Sort algorithm'],
@@ -47,7 +47,6 @@ ALGORITHMS = {
     'md5': ['MD5', 'How to use MD5'],
     'md5imp': ['MD5/Implementation', 'MD5 Algorithm implementation'],
     'mergesort': ['Sorting_algorithms/Merge_sort', 'Merge Sort algorithm'],
-    'naturalsort': ['Natural_sorting', 'Natural Sorting'],
     'nqueen': ['N-queens_problem', 'N-Queens Problem'],
     'pancakesort': ['Sorting_algorithms/Pancake_sort', 'Pancake Sort algorithm'],
     'patiencesort': ['Sorting_algorithms/Patience_sort', 'Patience Sort algorithm'],

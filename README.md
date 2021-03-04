@@ -10,10 +10,13 @@ algo-CLI
 - [x] Replace the =={header}== line in output
 - [x] Include all algorithms (Need to refactor url with wiki/Sorting_algorithms/<sort>). This needs to be inlcluded only when it's a sorting algorithm (i.e wiki/Binary_search)
 - [x] Add color to the syntax in output code
+- [x] Think about removing {{trans|Kotlin}} cases (i.e -java -base64)
+- [x] Think about adding {{Out}} to the stopping flags (i.e -python -binarysearch)
+- [ ] Think about adding '''Library''' to the STOP_FLAGS (i.e -binarysearch -cpp)
+- [ ] Think about removing the explanations and outputs (Maybe a flag --ignore-descriptions, --ignore-output, --ignore-all)
 - [ ] Make test suit
 - [ ] Handle different OS (Windows, Linux, MacOS)
-- [ ] Think about adding {{Out}} to the stopping flags (i.e -python -binarysearch)
-- [ ] Think about removing {{trans|Kotlin}} cases (i.e -java -base64)
 - [ ] Handle case where the algorithm is not found (-rust -radixsort)
 - [ ] Make `-l` argument that shows a list of the algorithms sorted by complexities
+- [ ] Handle excesive long lines (i.e -b64 -java, -b64 -cpp)
 - [ ] Hanlde user input errors
