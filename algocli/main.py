@@ -213,12 +213,12 @@ def get_parser():
         action='store_true')
 
     lang_group = parser.add_argument_group(
-        'Supported languages (Optional) defaults to Python')
+        'supported languages (Optional) defaults to Python')
     for key, value in util.SUPPORTED_LANGUAGES.items():
         lang_group.add_argument('-' + key, help=value[1], action='store_true')
 
     algorithm_group = parser.add_argument_group(
-        'Supported Algorithms (Required)')
+        'supported Algorithms (Required)')
     for key, value in util.ALGORITHMS.items():
         algorithm_group.add_argument(
             '-' + key, help=value[1], action='store_true')
