@@ -101,7 +101,8 @@ class DataHandler:
                 '<br>': '',
                 '{{Out}}': '\n=== Output ===',
                 '{{out}}Output': f'\n=== {line.rpartition("}")[-1]} ===',
-                '{{out}}': f'\n==== Output ==='
+                '{{out}}': f'\n==== Output ===',
+                '{{libheader': ''
                 }
 
     def _remove_unwated_chars(self, line):
@@ -230,6 +231,16 @@ def get_parser():
         action='store_true')
 
     parser.add_argument(
+        '--no-color',
+        help='black and white output',
+        action='store_true')
+
+    parser.add_argument(
+        '--list-colors',
+        help='print list of available colorschemes',
+        action='store_true')
+
+    parser.add_argument(
         '-color',
         '--color',
         help='colorized output',
@@ -237,12 +248,6 @@ def get_parser():
         dest='colorscheme',
         const='default',
         metavar='COLORSCHEME')
-
-    parser.add_argument(
-        '--no-color',
-        help='black and white output',
-        action='store_true')
-
 
 
     lang_group = parser.add_argument_group(
@@ -258,6 +263,11 @@ def get_parser():
 
     return parser
 
+def show_colorschemes():
+    print('\nAvailable Colorschemes: [Example: algocli -binarysearch -python --color zenburn]')
+    for i, color in enumerate(util.COLORS, start=1):
+        print(f'- {color}')
+    print()
 
 def algoCLI():
     parser = get_parser()
@@ -265,6 +275,10 @@ def algoCLI():
 
     if args['version']:
         print(f'algocli {__version__}')
+        return
+
+    if args['list_colors']:
+        show_colorschemes()
         return
 
     chosen_language = get_language_from_parser(args)

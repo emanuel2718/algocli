@@ -12,8 +12,8 @@ algo-CLI
 - [x] Add color to the syntax in output code
 - [x] Think about removing {{trans|Kotlin}} cases (i.e -java -base64)
 - [x] Think about adding {{Out}} to the stopping flags (i.e -python -binarysearch)
+- [x] Make the user be able to chose colorscheme (i.e --colorscheme gruvbox)
 - [ ] Think about adding '''Library''' to the STOP_FLAGS (i.e -binarysearch -cpp)
-- [ ] Make the user be able to chose colorscheme (i.e --colorscheme gruvbox)
 - [ ] Think about removing the explanations and outputs (Maybe a flag --ignore-descriptions, --ignore-output, --ignore-all)
 - [ ] Make test suit
 - [ ] Handle non-256 terminal
@@ -23,4 +23,5 @@ algo-CLI
 - [ ] Make `-l` argument that shows a list of the algorithms sorted by complexities
 - [ ] Handle excesive long lines (i.e -b64 -java, -b64 -cpp)
 - [ ] Hanlde user input errors
+- [ ] Add autcompletion for algorithms? Could be neat!
 
