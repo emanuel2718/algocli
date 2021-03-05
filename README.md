@@ -5,7 +5,7 @@ algo-CLI
 ## TODO:
 
 - [x] Handle command line arguments
-- [x] `algocli -python -quicksort` or `algocli -cpp -quicksort` cli argument for language of choice
+- [x] `algocli -quicksort -python` or `algocli -b64 -cpp` cli argument for language of choice
 - [x] Handle case of losing first line of output (-haskell -radixsort) (-go -radixsort)
 - [x] Replace the =={header}== line in output
 - [x] Include all algorithms (Need to refactor url with wiki/Sorting_algorithms/<sort>). This needs to be inlcluded only when it's a sorting algorithm (i.e wiki/Binary_search)
