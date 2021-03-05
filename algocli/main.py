@@ -48,6 +48,7 @@ class DataHandler:
 
         self.output_code = '\n'.join(self._format_code_for_output())
         self._print_code_to_console()
+        self.display_tip_if_applicable()
 
     def _print_banner(self, msg):
         print('\n\n' + '-' * 70)
@@ -65,6 +66,10 @@ class DataHandler:
         formatter = Terminal256Formatter(bg='dark', linenos=False, style=user_style)
         return highlight(self.output_code, lexer, formatter)
 
+    def display_tip_if_applicable(self):
+        if self.args['colorscheme'].lower() not in util.COLORS:
+            _print_tip(f'"algocli --list-colors" for available colorschemes\n')
+
 
     def _print_code_to_console(self):
         if self.output_code != self.raw_algorithm_code:
@@ -76,9 +81,6 @@ class DataHandler:
                 print(self._get_colored_output())
 
             self._print_banner('ALGORITHM OUTPUT ENDS HERE')
-
-            if self.args['colorscheme'].lower() not in util.COLORS:
-                _print_tip(f'"algocli --list-colors" for available colorschemes\n')
 
         # No modifications done to the raw algorithm means no match was found
         # for that specific language/algorithm
