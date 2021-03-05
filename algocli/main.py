@@ -14,10 +14,13 @@ from __init__ import __version__
 #STOP_FLAGS = ['{{out}}', 'Output:', "'''Library'''"]
 #STOP_FLAGS = ['{{out}}', 'Output:']
 STOP_FLAGS = ['dhflahfklasjfkla']
+BOLD = '\033[1m'
+ITALIC = '\033[3m'
+END = '\033[0m'
 
 
 class DataHandler:
-    def __init__(self, algorithm, language, colorized):
+    def __init__(self, algorithm, language, args):
         '''
             Example variable values:
                 self.language                   =: 'cpp'
@@ -36,7 +39,7 @@ class DataHandler:
         self.formal_language = util.SUPPORTED_LANGUAGES[self.language][1]
         self.formal_algorithm = util.ALGORITHMS[self.algorithm_name][1]
 
-        self.colorize_output = colorized
+        self.args = args
 
         self.data = self._get_data()
 
@@ -47,28 +50,35 @@ class DataHandler:
         self._print_code_to_console()
 
     def _print_banner(self, msg):
-        print('\n\n' + '-' * 78)
-        print(msg.center(78))
-        print('-' * 78 + '\n\n')
+        print('\n\n' + '-' * 70)
+        print(msg.center(70))
+        print('-' * 70 + '\n\n')
 
     def _get_colored_output(self):
         from pygments import highlight
         from pygments.lexers import get_lexer_by_name
         from pygments.formatters import Terminal256Formatter
 
+        theme = self.args['colorscheme'].lower()
+        user_style = theme if theme in util.COLORS else 'default'
         lexer = get_lexer_by_name(self.language, stripall=True)
-        formatter = Terminal256Formatter(bg='dark', linenos=False)
+        formatter = Terminal256Formatter(bg='dark', linenos=False, style=user_style)
         return highlight(self.output_code, lexer, formatter)
 
 
     def _print_code_to_console(self):
         if self.output_code != self.raw_algorithm_code:
-            if self.colorize_output:
-                self.output_code = self._get_colored_output()
-
             self._print_banner(f'{self.formal_algorithm} using {self.formal_language}')
-            print(self.output_code)
+
+            if self.args['no_color']:
+                print(self.output_code)
+            else:
+                print(self._get_colored_output())
+
             self._print_banner('ALGORITHM OUTPUT ENDS HERE')
+
+            if self.args['colorscheme'].lower() not in util.COLORS:
+                _print_tip(f'"algocli --list-colors" for available colorschemes\n')
 
         # No modifications done to the raw algorithm means no match was found
         # for that specific language/algorithm
@@ -171,17 +181,20 @@ class DataHandler:
                 return value[0]
         return None
 
+def _print_tip(msg):
+    print(f'{BOLD}[TIP]{END} {msg}')
+
 
 def _print_error(err):
-    print(f'[ERROR] {err}')
-
-
-def _print_ok(msg):
-    print(f'[OK]: {msg}')
+    print(f'{BOLD}[ERROR]{END} {err}')
 
 
 def _print_warning(msg):
-    print(f'[WARNING] {msg}')
+    print(f'{BOLD}[WARNING]{END} {msg}')
+
+
+def _print_ok(msg):
+    print(f'{BOLD}[OK]{END} {msg}')
 
 
 def _print_debug(msg):
@@ -217,8 +230,18 @@ def get_parser():
     parser.add_argument(
         '-color',
         '--color',
-        help='enables colorized algorithms',
+        help='colorized output',
+        nargs='?',
+        dest='colorscheme',
+        const='default',
+        metavar='COLORSCHEME')
+
+    parser.add_argument(
+        '--no-color',
+        help='black and white output',
         action='store_true')
+
+
 
     lang_group = parser.add_argument_group(
         'optional supported languages (Defaults to Python)')
@@ -237,7 +260,6 @@ def get_parser():
 def algoCLI():
     parser = get_parser()
     args = vars(parser.parse_args())
-    colorized = False
 
     if args['version']:
         print(f'algocli {__version__}')
@@ -255,10 +277,10 @@ def algoCLI():
             'Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
         return
 
-    if args['color']:
-        colorized = True
+    if args['colorscheme'].lower() not in util.COLORS:
+        _print_warning('Color not found. Using default colorscheme.')
 
-    data_handler = DataHandler(chosen_algorithm, chosen_language, colorized)
+    data_handler = DataHandler(chosen_algorithm, chosen_language, args)
 
 
 if __name__ == '__main__':
