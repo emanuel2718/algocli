@@ -13,6 +13,7 @@ algo-CLI
 - [x] Think about removing {{trans|Kotlin}} cases (i.e -java -base64)
 - [x] Think about adding {{Out}} to the stopping flags (i.e -python -binarysearch)
 - [x] Make the user be able to chose colorscheme (i.e --colorscheme gruvbox)
+- [ ] Add (-a, --all) flag that prints all the output including explanations (without that it should only print code)
 - [ ] Think about adding '''Library''' to the STOP_FLAGS (i.e -binarysearch -cpp)
 - [ ] Think about removing the explanations and outputs (Maybe a flag --ignore-descriptions, --ignore-output, --ignore-all)
 - [ ] Make test suit

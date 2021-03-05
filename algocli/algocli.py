@@ -6,17 +6,24 @@ written by Emanuel Ramirez (emanuel2718@gmail.com)
 '''
 
 import argparse
-import requests
 import util
 from bs4 import BeautifulSoup
+from contextlib import closing
+from requests import get
+from requests.exceptions import RequestException
+from time import time
 from __init__ import __version__
 
 #STOP_FLAGS = ['{{out}}', 'Output:', "'''Library'''"]
 #STOP_FLAGS = ['{{out}}', 'Output:']
-STOP_FLAGS = ['dhflahfklasjfkla']
+STOP_FLAGS = ["'''Library'''"]
 BOLD = '\033[1m'
 ITALIC = '\033[3m'
 END = '\033[0m'
+
+HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) '\
+                         'AppleWebKit/537.36 (KHTML, like Gecko) '\
+                         'Chrome/75.0.3770.80 Safari/537.36'}
 
 
 class DataHandler:
@@ -30,6 +37,7 @@ class DataHandler:
                 self.formal_language            =: 'C++'
                 self.formal_algorithm           =: 'Insertion Sort algorithm'
         '''
+        self.start_time = time()
         self.language = language
         self.algorithm_name = algorithm
 
@@ -41,19 +49,20 @@ class DataHandler:
 
         self.args = args
 
-        self.data = self._get_data()
+        self.data = self._get_data(self.get_url(), True)
 
         self.section_number, self.formatted_language = self._get_section_and_language()
-        self.raw_algorithm_code = self._get_raw_algorithm_code()
+        self.raw_algorithm_code = self._get_data(self.get_code_url())
 
         self.output_code = '\n'.join(self._format_code_for_output())
         self._print_code_to_console()
         self.display_tip_if_applicable()
+        _print_debug(f'Time taken: {time()-self.start_time:.04} seconds')
 
     def _print_banner(self, msg):
-        print('\n\n' + '-' * 70)
+        print('\n\n' + '=' * 70)
         print(msg.center(70))
-        print('-' * 70 + '\n\n')
+        print('=' * 70 + '\n\n')
 
     def _get_colored_output(self):
         from pygments import highlight
@@ -125,19 +134,35 @@ class DataHandler:
 
         return result
 
-    def _get_url(self):
+    def get_url(self):
         return f'https://rosettacode.org/wiki/{self.sanitized_algorithm_name}'
 
-    def _get_code_url(self):
+    def get_code_url(self):
         return (
             f'https://rosettacode.org/mw/index.php?title={self.sanitized_algorithm_name}'
             f'&action=edit&section={self.section_number}')
 
-    def _get_data(self):
-        url = self._get_url()
-        page = requests.get(url)
-        soup = BeautifulSoup(page.content, 'html.parser')
-        return soup.find(id='toc')
+
+    def _get_data(self, url, code=False):
+        '''code := the request is for the final algorithm code'''
+        try:
+            with closing(get(url, headers=HEADERS, stream=True, timeout=5)) as response:
+                if self.is_valid_response(response):
+                    if code:
+                        return BeautifulSoup(response.content, 'html.parser').find(id='toc')
+                    return str(BeautifulSoup(response.content, 'html.parser').find('textarea').text)
+                else:
+                    return None
+        except RequestException as e:
+            _print_error(e)
+            return None
+
+    def is_valid_response(self, resp):
+        content_type =  resp.headers['Content-Type'].lower()
+        return (resp.status_code == 200
+                and content_type is not None
+                and content_type.find('html') > -1)
+
 
     def _get_section_and_language(self):
         for category in self.data('li'):
@@ -149,12 +174,6 @@ class DataHandler:
                 return section_number, formatted_language
         return None, None
 
-    def _get_raw_algorithm_code(self):
-        code_url = self._get_code_url()
-        code_page = requests.get(code_url)
-        soup = BeautifulSoup(code_page.content, 'html.parser')
-
-        return str(soup.find('textarea').text)
 
     def get_sanitized_algorithm_name(self):
         ''' The rosettacode page address must contain the sorting algorithm in
@@ -201,7 +220,7 @@ def _print_ok(msg):
 
 
 def _print_debug(msg):
-    print(f'[DEBUG] {msg}')
+    print(f'{BOLD}[DEBUG]{END} {msg}')
 
 
 def get_language_from_parser(args):
@@ -221,7 +240,7 @@ def get_algorithm_from_parser(args):
 def get_parser():
     parser = argparse.ArgumentParser(
         description='print common algorithms via the command line',
-        usage='algocli [-h] [-v] [-algorithm] [-language] [-color]',
+        usage='algocli [-h] [-v] [-algorithm] [-language] [--color COLORSCHEME] [--no-color] [--list-colors]',
         formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument(
@@ -269,7 +288,7 @@ def show_colorschemes():
         print(f'- {color}')
     print()
 
-def algoCLI():
+def run():
     parser = get_parser()
     args = vars(parser.parse_args())
 
@@ -300,4 +319,4 @@ def algoCLI():
 
 
 if __name__ == '__main__':
-    algoCLI()
+    run()

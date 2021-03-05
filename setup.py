@@ -35,7 +35,7 @@ setup(name='algocli',
       ],
       entry_points={
           'console_scripts': [
-              'algocli = algocli.main:algoCLI',
+              'algocli = algocli.algocli:run',
           ]
       }
 )
