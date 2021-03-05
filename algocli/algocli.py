@@ -25,6 +25,10 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) '\
                          'AppleWebKit/537.36 (KHTML, like Gecko) '\
                          'Chrome/75.0.3770.80 Safari/537.36'}
 
+STACK = []
+SKIP = ['<pre>']
+END_SKIP = ['</pre>']
+
 
 class DataHandler:
     def __init__(self, algorithm, language, args):
@@ -76,12 +80,13 @@ class DataHandler:
         return highlight(self.output_code, lexer, formatter)
 
     def display_tip_if_applicable(self):
-        if self.args['colorscheme'].lower() not in util.COLORS:
+        if self.args['colorscheme'] not in util.COLORS:
             _print_tip(f'"algocli --list-colors" for available colorschemes\n')
 
 
     def _print_code_to_console(self):
-        if self.output_code != self.raw_algorithm_code:
+        if not self.output_code.startswith('{{task'):
+        #if self.output_code != self.raw_algorithm_code:
             self._print_banner(f'{self.formal_algorithm} using {self.formal_language}')
 
             if self.args['no_color']:
@@ -98,20 +103,27 @@ class DataHandler:
                 f'No results found for {self.formal_algorithm} using {self.formal_language}')
 
     def get_replacement_chars(self, line):
-        return {f'<lang': f'{line.split(">")[-1]}',
+        return {f'<lang': f'{line.split(">", 1)[-1]}',
                 '}</lang>': '}',
                 '}</pre>': '}',
                 '</pre>': '',
                 '<pre': '',
-                '</lang>': f'{line[:-7]}',
+                '{{works': '',
+                '</lang>': f'{line.partition("</")[0]}',
+                #'</lang>': f'{line[:-7]}',
                 '=={{header': '',
                 '===': f'\n{line}\n',
                 '{{trans': '',
                 '<br>': '',
                 '{{Out}}': '\n=== Output ===',
                 '{{out}}Output': f'\n=== {line.rpartition("}")[-1]} ===',
-                '{{out}}': f'\n==== Output ===',
-                '{{libheader': ''
+                #'{{out}}': f'\n=== Output ===',
+                '{{out}}': '',
+                '{{libheader': '',
+                'Output:': '',
+                "'''Output'''": '',
+                "'''": f'\n{line}',
+                'Usage:': "\n\n'''How to use'''"
                 }
 
     def _remove_unwated_chars(self, line):
@@ -121,6 +133,20 @@ class DataHandler:
                 return self.get_replacement_chars(line)[key]
         return line
 
+    def is_valid_line(self, line):
+        if line.startswith('<pre>') and line.endswith('</pre>'):
+            return False
+        if line.startswith('<pre>'):
+            STACK.append('<pre>')
+            return False
+
+        if len(STACK) == 0:
+            return True
+
+        if line.endswith('</pre>'):
+            STACK.pop()
+            return False
+
     def _format_code_for_output(self):
         result = []
         code = self.raw_algorithm_code.split('\n')
@@ -129,9 +155,9 @@ class DataHandler:
             if line in STOP_FLAGS:
                 return result
             else:
-                line = self._remove_unwated_chars(line)
-                result.append(line)
-
+                if self.is_valid_line(line):
+                    line = self._remove_unwated_chars(line)
+                    result.append(line)
         return result
 
     def get_url(self):
@@ -312,8 +338,8 @@ def run():
             'Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
         return
 
-    if args['colorscheme'].lower() not in util.COLORS:
-        _print_warning('Color not found. Using default colorscheme.')
+    #if args['colorscheme'] not in util.COLORS:
+        #_print_warning('Color not found. Using default colorscheme.')
 
     data_handler = DataHandler(chosen_algorithm, chosen_language, args)
 
