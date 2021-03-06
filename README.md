@@ -213,8 +213,7 @@ Correct language query (shown on the left) must be given for **algocli** to unde
 
 # Available Themes
 
-[List of available Themes](https://github.com/emanuel2718/algocli/THEMES.md)
-
+[List of available Themes](https://github.com/emanuel2718/algocli/blob/master/THEMES.md)
 
 &nbsp; 
 
