@@ -87,7 +87,7 @@ class DataHandler:
         if not self.output_code.startswith('{{task'):
             self._print_banner(f'{self.formal_algorithm} using {self.formal_language}')
 
-            if self.args['no_color']:
+            if not self.args['colorscheme']:
                 print(self.output_code)
             else:
                 print(self._get_colored_output())
@@ -244,37 +244,31 @@ def _print_ok(msg):
 def _print_debug(msg):
     print(f'{BOLD}[DEBUG]{END} {msg}')
 
-
-def get_language_from_parser(args):
-    for lang in util.SUPPORTED_LANGUAGES.keys():
-        if args[lang]:
-            return lang
-    return None
-
-
-def get_algorithm_from_parser(args):
-    for key, value in args.items():
-        if key in util.ALGORITHMS.keys() and value:
-            return key
-    return None
+def _print_list(msg, arr):
+    print('\n' + msg)
+    for item in arr:
+        print(f'- {item}')
+    print()
 
 
 def get_parser():
     parser = argparse.ArgumentParser(
         description='print common algorithms via the command line',
-        usage='algocli [-h] [-v] [-algorithm] [-language] [--color COLORSCHEME] [--no-color] [--list-colors] '
-              '[--list-lang] [--list-algo]',
+        usage='algocli [-h] [-v] [-c COLORSCHEME] [--list-colors] '
+              '[--list-lang] [--list-algo] [INPUT ...]',
         formatter_class=argparse.RawTextHelpFormatter)
+
+    parser.add_argument(
+        'input',
+        type=str,
+        nargs='*',
+        metavar='INPUT',
+        help='the algorithm and language combo (i.e algocli python insertionsort)')
 
     parser.add_argument(
         '-v',
         '--version',
         help='displays the current version of algocli',
-        action='store_true')
-
-    parser.add_argument(
-        '--no-color',
-        help='black and white output',
         action='store_true')
 
     parser.add_argument(
@@ -293,6 +287,7 @@ def get_parser():
         action='store_true')
 
     parser.add_argument(
+        '-c',
         '--color',
         help='colorized output',
         nargs='?',
@@ -300,31 +295,25 @@ def get_parser():
         const='default',
         metavar='COLORSCHEME')
 
-
-    lang_group = parser.add_argument_group(
-        'optional supported languages (Defaults to Python)')
-    for key, value in util.SUPPORTED_LANGUAGES.items():
-        lang_group.add_argument('-' + key, help=value[1], action='store_true')
-
-    algorithm_group = parser.add_argument_group(
-        'required supported algorithms')
-    for key, value in util.ALGORITHMS.items():
-        algorithm_group.add_argument(
-            '-' + key, help=value[1], action='store_true')
-
     return parser
 
-def show_colorschemes():
-    print('\nAvailable Colorschemes: [Example: algocli -binarysearch -python --color zenburn]')
-    for i, color in enumerate(util.COLORS, start=1):
-        print(f'- {color}')
-    print()
 
-def print_list(msg, arr):
-    print('\n' + msg)
-    for item in arr:
-        print(f'- {item}')
-    print()
+def is_valid_input(arr, arg_input):
+    for key in arr:
+        if key.lower() in {arg_input[0], arg_input[1]}:
+            return key.lower()
+    return None
+
+def get_algo_and_lang_from_input(stdin):
+    args = stdin
+    if isinstance(stdin, str):
+        parser = get_parser()
+        args = vars(parser.parse_args(raw_in.split(' ')))
+
+    algo = is_valid_input(util.ALGORITHMS, args['input'])
+    lang = is_valid_input(util.SUPPORTED_LANGUAGES, args['input'])
+    return algo, lang
+
 
 def run():
     parser = get_parser()
@@ -335,36 +324,32 @@ def run():
         return
 
     if args['list_colors']:
-        print_list('Supported Colorscemes: [Example: algocli -b64 -python --color rrt]',
+        _print_list('Supported Colorscemes: [Example: algocli -b64 -python --color rrt]',
                     util.COLORS)
-        #show_colorschemes()
         return
 
     if args['list_lang']:
-        print_list('Supported Languages flags:', util.SUPPORTED_LANGUAGES)
+        _print_list('Supported Languages flags:', util.SUPPORTED_LANGUAGES)
         return
 
     if args['list_algo']:
-        print_list('Supported Algorithms flags:', util.ALGORITHMS)
+        _print_list('Supported Algorithms flags:', util.ALGORITHMS)
         return
 
-    chosen_language = get_language_from_parser(args)
-    if chosen_language is None:
-        _print_warning(
-            'No language flag was provided. Using default language: Python')
-        chosen_language = 'python'
-
-    chosen_algorithm = get_algorithm_from_parser(args)
-    if chosen_algorithm is None:
-        _print_error(
-            'Algorithm must be provided alongside language flag. Example: algocli -cpp -insertionsort')
+    if not args['input']:
+        parser.print_help()
         return
 
-    #if args['colorscheme'] not in util.COLORS:
-        #_print_warning('Color not found. Using default colorscheme.')
+    else:
+        algo, lang = get_algo_and_lang_from_input(args)
+        if algo is None:
+            _print_error('Not a valid algorithm. algocli --list-algo to see list of available algorithms')
+            return
+        if lang is None:
+            _print_warning('No language specified. Using default: Python')
+            lang = 'python'
 
-    data_handler = DataHandler(chosen_algorithm, chosen_language, args)
-
+        data_handler = DataHandler(algo, lang, args)
 
 if __name__ == '__main__':
     run()

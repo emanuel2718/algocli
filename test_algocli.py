@@ -5,5 +5,5 @@ import unittest
 import algocli
 
 
-class TestAlgocli(unittest.testcase):
+class TestAlgocli(unittest.TestCase):
     pass
