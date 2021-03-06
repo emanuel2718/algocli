@@ -14,7 +14,7 @@ ALGORITHMS = {
     'binarysearch': ['Binary_search', 'Binary Search algorithm'],
     'bogosort': ['Sorting_algorithms/Bogosort', 'Bogo Sort algorithm'],
     'bubblesort': ['Sorting_algorithms/Bubble_sort', 'Bubble Sort algorithm'],
-    'caesarcipher': ['Sorting_algorithms/Caesar_cipher', 'Caesar Cipher'],
+    'caesarcipher': ['Caesar_cipher', 'Caesar Cipher'],
     'cocktailsort': ['Sorting_algorithms/Cocktail_sort', 'Cocktail Sort algorithm'],
     'combsort': ['Sorting_algorithms/Comb_sort', 'Comb Sort algorithm'],
     'countingsort': ['Sorting_algorithms/Counting_sort', 'Counting Sort algorithm'],

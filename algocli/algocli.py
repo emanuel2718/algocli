@@ -14,20 +14,19 @@ from requests.exceptions import RequestException
 from time import time
 from __init__ import __version__
 
-#STOP_FLAGS = ['{{out}}', 'Output:', "'''Library'''"]
-#STOP_FLAGS = ['{{out}}', 'Output:']
 STOP_FLAGS = ["'''Library'''"]
+
 BOLD = '\033[1m'
 ITALIC = '\033[3m'
 END = '\033[0m'
 
-HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) '\
-                         'AppleWebKit/537.36 (KHTML, like Gecko) '\
-                         'Chrome/75.0.3770.80 Safari/537.36'}
-
 STACK = []
 SKIP = ['<pre>']
 END_SKIP = ['</pre>']
+
+HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) '\
+                         'AppleWebKit/537.36 (KHTML, like Gecko) '\
+                         'Chrome/75.0.3770.80 Safari/537.36'}
 
 
 class DataHandler:
@@ -73,7 +72,7 @@ class DataHandler:
         from pygments.lexers import get_lexer_by_name
         from pygments.formatters import Terminal256Formatter
 
-        theme = self.args['colorscheme'].lower()
+        theme = self.args['colorscheme']
         user_style = theme if theme in util.COLORS else 'default'
         lexer = get_lexer_by_name(self.language, stripall=True)
         formatter = Terminal256Formatter(bg='dark', linenos=False, style=user_style)
@@ -86,7 +85,6 @@ class DataHandler:
 
     def _print_code_to_console(self):
         if not self.output_code.startswith('{{task'):
-        #if self.output_code != self.raw_algorithm_code:
             self._print_banner(f'{self.formal_algorithm} using {self.formal_language}')
 
             if self.args['no_color']:
@@ -110,14 +108,12 @@ class DataHandler:
                 '<pre': '',
                 '{{works': '',
                 '</lang>': f'{line.partition("</")[0]}',
-                #'</lang>': f'{line[:-7]}',
                 '=={{header': '',
                 '===': f'\n{line}\n',
                 '{{trans': '',
                 '<br>': '',
                 '{{Out}}': '\n=== Output ===',
                 '{{out}}Output': f'\n=== {line.rpartition("}")[-1]} ===',
-                #'{{out}}': f'\n=== Output ===',
                 '{{out}}': '',
                 '{{libheader': '',
                 'Output:': '',
@@ -266,7 +262,8 @@ def get_algorithm_from_parser(args):
 def get_parser():
     parser = argparse.ArgumentParser(
         description='print common algorithms via the command line',
-        usage='algocli [-h] [-v] [-algorithm] [-language] [--color COLORSCHEME] [--no-color] [--list-colors]',
+        usage='algocli [-h] [-v] [-algorithm] [-language] [--color COLORSCHEME] [--no-color] [--list-colors] '
+              '[--list-lang] [--list-algo]',
         formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument(
@@ -286,7 +283,16 @@ def get_parser():
         action='store_true')
 
     parser.add_argument(
-        '-color',
+        '--list-lang',
+        help='print list of supported languages',
+        action='store_true')
+
+    parser.add_argument(
+        '--list-algo',
+        help='print list of supported algorithms',
+        action='store_true')
+
+    parser.add_argument(
         '--color',
         help='colorized output',
         nargs='?',
@@ -314,6 +320,12 @@ def show_colorschemes():
         print(f'- {color}')
     print()
 
+def print_list(msg, arr):
+    print('\n' + msg)
+    for item in arr:
+        print(f'- {item}')
+    print()
+
 def run():
     parser = get_parser()
     args = vars(parser.parse_args())
@@ -323,7 +335,17 @@ def run():
         return
 
     if args['list_colors']:
-        show_colorschemes()
+        print_list('Supported Colorscemes: [Example: algocli -b64 -python --color rrt]',
+                    util.COLORS)
+        #show_colorschemes()
+        return
+
+    if args['list_lang']:
+        print_list('Supported Languages flags:', util.SUPPORTED_LANGUAGES)
+        return
+
+    if args['list_algo']:
+        print_list('Supported Algorithms flags:', util.ALGORITHMS)
         return
 
     chosen_language = get_language_from_parser(args)
