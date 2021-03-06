@@ -6,13 +6,13 @@ written by Emanuel Ramirez (emanuel2718@gmail.com)
 '''
 
 import argparse
-import util
+from algocli.util import COLORS, ALGORITHMS, SUPPORTED_LANGUAGES
 from bs4 import BeautifulSoup
 from contextlib import closing
 from requests import get
 from requests.exceptions import RequestException
 from time import time
-from __init__ import __version__
+from algocli import __version__
 
 STOP_FLAGS = ["'''Library'''"]
 
@@ -47,8 +47,8 @@ class DataHandler:
         self.sanitized_language = self.get_sanitized_language()
         self.sanitized_algorithm_name = self.get_sanitized_algorithm_name()
 
-        self.formal_language = util.SUPPORTED_LANGUAGES[self.language][1]
-        self.formal_algorithm = util.ALGORITHMS[self.algorithm_name][1]
+        self.formal_language = SUPPORTED_LANGUAGES[self.language][1]
+        self.formal_algorithm = ALGORITHMS[self.algorithm_name][1]
 
         self.args = args
 
@@ -73,13 +73,13 @@ class DataHandler:
         from pygments.formatters import Terminal256Formatter
 
         theme = self.args['colorscheme']
-        user_style = theme if theme in util.COLORS else 'default'
+        user_style = theme if theme in COLORS else 'default'
         lexer = get_lexer_by_name(self.language, stripall=True)
         formatter = Terminal256Formatter(bg='dark', linenos=False, style=user_style)
         return highlight(self.output_code, lexer, formatter)
 
     def display_tip_if_applicable(self):
-        if self.args['colorscheme'] not in util.COLORS:
+        if self.args['colorscheme'] not in COLORS:
             _print_tip(f'"algocli --list-colors" for available colorschemes\n')
 
 
@@ -204,7 +204,7 @@ class DataHandler:
         :param algo: the algorithm flag string (i.e selectionsort)
         :return formatted algorithm string (i.e Selection_sort)
         '''
-        for key, value in util.ALGORITHMS.items():
+        for key, value in ALGORITHMS.items():
             if self.algorithm_name == key:
                 return value[0]
         return None
@@ -220,7 +220,7 @@ class DataHandler:
         '''
         if self.language is None:
             return 'Python'
-        for key, value in util.SUPPORTED_LANGUAGES.items():
+        for key, value in SUPPORTED_LANGUAGES.items():
             if self.language == key:
                 return value[0]
         return None
@@ -246,16 +246,22 @@ def _print_debug(msg):
 
 def _print_list(msg, arr):
     print('\n' + msg)
-    for item in arr:
-        print(f'- {item}')
+
+    # For COLORS list which is a tuple
+    if isinstance(arr, tuple):
+        for item in arr:
+            print(f'- {item}')
+    else:
+        for item, value in arr.items():
+            print(f'- {item:<20s} {value[1]:<10s}')
     print()
 
 
 def get_parser():
     parser = argparse.ArgumentParser(
         description='print common algorithms via the command line',
-        usage='algocli [-h] [-v] [-c COLORSCHEME] [--list-colors] '
-              '[--list-lang] [--list-algo] [INPUT ...]',
+        usage='algocli [INPUT ...] [-h] [-v] [-c COLORSCHEME] [--list-colors] '
+              '[--list-lang] [--list-algo]',
         formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument(
@@ -310,8 +316,8 @@ def get_algo_and_lang_from_input(stdin):
         parser = get_parser()
         args = vars(parser.parse_args(raw_in.split(' ')))
 
-    algo = is_valid_input(util.ALGORITHMS, args['input'])
-    lang = is_valid_input(util.SUPPORTED_LANGUAGES, args['input'])
+    algo = is_valid_input(ALGORITHMS, args['input'])
+    lang = is_valid_input(SUPPORTED_LANGUAGES, args['input'])
     return algo, lang
 
 
@@ -325,15 +331,15 @@ def run():
 
     if args['list_colors']:
         _print_list('Supported Colorscemes: [Example: algocli -b64 -python --color rrt]',
-                    util.COLORS)
+                    COLORS)
         return
 
     if args['list_lang']:
-        _print_list('Supported Languages flags:', util.SUPPORTED_LANGUAGES)
+        _print_list('Supported Languages flags:', SUPPORTED_LANGUAGES)
         return
 
     if args['list_algo']:
-        _print_list('Supported Algorithms flags:', util.ALGORITHMS)
+        _print_list('Supported Algorithms flags:', ALGORITHMS)
         return
 
     if not args['input']:
@@ -343,11 +349,11 @@ def run():
     else:
         algo, lang = get_algo_and_lang_from_input(args)
         if algo is None:
-            _print_error('Not a valid algorithm. algocli --list-algo to see list of available algorithms')
+            _print_error('Not valid algorithm specified. See algocli --list-algo')
             return
         if lang is None:
-            _print_warning('No language specified. Using default: Python')
-            lang = 'python'
+            _print_error('Not valid language specified. See algocli --list-lang')
+            return
 
         data_handler = DataHandler(algo, lang, args)
 

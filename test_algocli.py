@@ -2,8 +2,22 @@
 
 '''Tests for algocli'''
 import unittest
-import algocli
+from algocli import algocli
 
 
 class TestAlgocli(unittest.TestCase):
-    pass
+
+    def setup(self):
+
+        args = {
+            'input': ['python', 'insertionsort'],
+            'version': False,
+            'list_colors': False,
+            'list_lang': False,
+            'list_algo': False,
+            'colorscheme': None
+        }
+#        self.data_handler = algocli.DataHandler('python', 'insertionsort', args)
+
+if __name__ == '__main__':
+    unittest.main()

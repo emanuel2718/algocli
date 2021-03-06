@@ -3,9 +3,22 @@ Utility data structures
 Written by Emanuel Ramirez (emanuel2718@gmail.com)
 '''
 
-COLORS =  ('default', 'monokai', 'solarized-dark', 'solarized-light',
-           'material', 'pastie', 'trac', 'fruity', 'bw', 'rrt',
-           'igor', 'lovelace', 'stata-dark', 'zenburn')
+COLORS =  (
+    'bw',
+    'default',
+    'fruity',
+    'igor',
+    'lovelace',
+    'material',
+    'monokai',
+    'pastie',
+    'rrt',
+    'solarized-dark',
+    'solarized-light',
+    'stata-dark',
+    'trac',
+    'zenburn'
+)
 
 ALGORITHMS = {
     'avltrees': ['AVL_tree', 'AVL Trees'],
