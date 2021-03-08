@@ -226,15 +226,14 @@ Correct language query (shown on the left) must be given for **algocli** to unde
 
 # Things to do:
 
-- [ ] Make a theme file and link it in README.md
+- [x] Make a theme file and link it in README.md
+- [ ] Make a O(1) lookup table with {'cpp': [formatted_name, section_number]} to avoid having to make a separate server request to get this data everytime. This will cut the time in half.
+- [ ] Publish version 0.1 to pip and Homebrew. (Maybe macports?)
+- [ ] Make test suit
 - [ ] Fix bug with color flag (i.e algocli -c radixsort cpp)
 - [ ] Let the user change the default language and colorscheme (This works with insalled packages? How?)
 - [ ] Add the option of giving (c++, C++, cplusplus, c+++ or cpp as language input)
 - [ ] Reduce the amount it takes to output the data (Acceptable range 1-1.9 seconds. Now in 3-4 seconds)
-- [ ] Add (-a, --all) flag that prints all the output including explanations (without that it should only print code)
-- [ ] Think about removing the explanations and outputs (Maybe a flag --ignore-descriptions, --ignore-output, --ignore-all)
-- [ ] Make test suit
-- [ ] Publish version 0.1 to pip and Homebrew. (Maybe macports?)
 - [ ] Handle non-256 terminal
 - [ ] Make Colorscheme section with photos in README.
 - [ ] Handle different OS (Windows, Linux, MacOS)
