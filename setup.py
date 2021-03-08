@@ -3,10 +3,15 @@
 from setuptools import setup
 import algocli
 
+
+long_description = ''
+with open('README.md', 'r') as f:
+    long_description = f.read()
+
 setup(name='algocli',
       version=algocli.__version__,
       description="print common algorithms to the command line",
-      long_description='',
+      long_description=long_description,
       classifiers=[
             "Development Status :: 3 - Alpha",
             "Environment :: Console",
@@ -24,11 +29,12 @@ setup(name='algocli',
       maintainer='Emanuel Ramirez Alsina',
       maintainer_email='eramirez2718@gmail.com',
       url='https://github.com/eramirez2718/algocli',
+      python_requires='>=3.6',
       license='MIT',
       packages=['algocli'],
       zip_safe=False,
       install_requires=[
-          'Pygments'
+          'Pygments',
           'bs4',
           'requests',
           'setuptools',
