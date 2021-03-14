@@ -24,17 +24,17 @@ Print common algorithms to the command line
 
 Use pip:
 
-    pip install algocli
+    $ pip install algocli
     
 macOS users can install using [Homebrew](https://brew.sh):
 
-    brew install algocli
+    $ brew install algocli
 
 Manual installation:
 
-    git clone https://github.com/emanuel2718/algocli.git
-    cd algocli
-    python setup.py install
+    $ git clone https://github.com/emanuel2718/algocli.git
+    $ cd algocli
+    $ python setup.py install
 
 
 # Description
@@ -42,7 +42,7 @@ Manual installation:
 **algocli** is a command-line tool that lets users print common algorithms directly into the terminal. Why open
 a browser search through countless articles about how to do [insertionsort in python](#insertionsort-python) when you can just type `algocli python insertionsort` in the terminal.
 
-    algocli [INPUT ...] [OPTIONS]
+    $ algocli [INPUT ...] [OPTIONS]
     
     
 ![bubblesortPython](https://user-images.githubusercontent.com/55965894/110212969-cb68e780-7e52-11eb-8f34-1b02a11b4c56.png)
@@ -176,38 +176,38 @@ Correct language query (shown on the left) must be given for **algocli** to unde
 
 **NOTE**: The order of the options do not matter, but for the sake of simplicity all the examples will be shown with the algorithm first followed by the language. The following are equivalent:
     
-    algocli radixsort cpp
-    algocli cpp radixsort
+    $ algocli radixsort cpp
+    $ algocli cpp radixsort
     
 &nbsp; 
 
 #### List of supported languages
     
-    algocli --list-lang
+    $ algocli --list-lang
 
 #### List of supported algorithms
 
-    algocli --list-algo
+    $ algocli --list-algo
 
 #### Insertion Sort with Python *without* color
 
-    algocli insertionsort python
+    $ algocli insertionsort python
 
 #### Insertion Sort with Python *with* color
 
-    algocli insertionsort python -c
+    $ algocli insertionsort python -c
 
 #### Insertion Sort with Python *with* material colorscheme
 
-    algocli insertionsort python -c material
+    $ algocli insertionsort python -c material
     
 #### Radix Sort with C++
 
-    algocli radixsort cpp
+    $ algocli radixsort cpp
     
 #### Fibonacci Sequence calculation with Java
 
-    algocli fib java
+    $ algocli fib java
 
 &nbsp; 
 
@@ -229,6 +229,7 @@ Correct language query (shown on the left) must be given for **algocli** to unde
 - [x] Make a theme file and link it in README.md
 - [ ] Make a O(1) lookup table with {'cpp': [formatted_name, section_number]} to avoid having to make a separate server request to get this data everytime. This will cut the time in half.
 - [ ] Fix bug in helloworld (python) ----> <lang ..... </lang>
+- [ ] Specify in README that algorithms presented may not be the most efficient and accurate yadda yadda yadda.
 - [ ] Create own parser wikitext parser
 - [ ] Publish version 0.1 to pip and Homebrew. (Maybe macports?)
 - [ ] Handle RELEASES
