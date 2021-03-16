@@ -9,7 +9,7 @@ import argparse
 from algocli.util import COLORS, ALGORITHMS, SUPPORTED_LANGUAGES
 from bs4 import BeautifulSoup
 from contextlib import closing
-from requests import get
+from requests import Session
 from requests.exceptions import RequestException
 from time import time
 from algocli import __version__
@@ -24,9 +24,10 @@ STACK = []
 SKIP = ['<pre>']
 END_SKIP = ['</pre>']
 
-HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) '\
-                         'AppleWebKit/537.36 (KHTML, like Gecko) '\
-                         'Chrome/75.0.3770.80 Safari/537.36'}
+HEADERS = {'User-Agent':'Mozilla/5.0 (X11; CrOS x86_64 12871.102.0)'\
+                        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36'}
+
+session = Session()
 
 
 class DataHandler:
@@ -43,6 +44,7 @@ class DataHandler:
         self.start_time = time()
         self.language = language
         self.algorithm_name = algorithm
+        self.args = args
 
         self.sanitized_language = self.get_sanitized_language()
         self.sanitized_algorithm_name = self.get_sanitized_algorithm_name()
@@ -50,7 +52,6 @@ class DataHandler:
         self.formal_language = SUPPORTED_LANGUAGES[self.language][1]
         self.formal_algorithm = ALGORITHMS[self.algorithm_name][1]
 
-        self.args = args
 
         self.data = self._get_data(self.get_url(), True)
 
@@ -60,7 +61,7 @@ class DataHandler:
         self.output_code = '\n'.join(self._format_code_for_output())
         self._print_code_to_console()
         self.display_tip_if_applicable()
-        _print_debug(f'Time taken: {time()-self.start_time:.04} seconds')
+        _print_debug(f'Time taken: {time()-self.start_time:.4} seconds')
 
     def _print_banner(self, msg):
         print('\n\n' + '=' * 70)
@@ -100,6 +101,9 @@ class DataHandler:
             _print_error(
                 f'No results found for {self.formal_algorithm} using {self.formal_language}')
 
+    def get_lang_replacement(self, line):
+        return line.split(">", 1)[-1].split("<")[0]
+
     def get_replacement_chars(self, line):
         return {f'<lang': f'{line.split(">", 1)[-1]}',
                 '}</lang>': '}',
@@ -125,7 +129,10 @@ class DataHandler:
     def _remove_unwated_chars(self, line):
         replacement_chars = self.get_replacement_chars(line)
         for key in replacement_chars.keys():
-            if line.startswith(key) or line.endswith(key):
+            if line.startswith("<lang") and line.endswith("</lang>"):
+                return self.get_lang_replacement(line)
+
+            elif line.startswith(key) or line.endswith(key):
                 return self.get_replacement_chars(line)[key]
         return line
 
@@ -168,7 +175,7 @@ class DataHandler:
     def _get_data(self, url, code=False):
         '''code := the request is for the final algorithm code'''
         try:
-            with closing(get(url, headers=HEADERS, stream=True, timeout=5)) as response:
+            with closing(session.get(url, headers=HEADERS, stream=True, timeout=5)) as response:
                 if self.is_valid_response(response):
                     if code:
                         return BeautifulSoup(response.content, 'html.parser').find(id='toc')

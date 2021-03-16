@@ -228,6 +228,7 @@ Correct language query (shown on the left) must be given for **algocli** to unde
 
 - [x] Make a theme file and link it in README.md
 - [ ] Make a O(1) lookup table with {'cpp': [formatted_name, section_number]} to avoid having to make a separate server request to get this data everytime. This will cut the time in half.
+- [ ] Convert non code line into comments (Must make a lookup table of comments chars on the different langugages)
 - [ ] Fix bug in helloworld (python) ----> <lang ..... </lang>
 - [ ] Specify in README that algorithms presented may not be the most efficient and accurate yadda yadda yadda.
 - [ ] Create own parser wikitext parser

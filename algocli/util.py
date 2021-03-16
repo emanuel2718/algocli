@@ -48,6 +48,7 @@ ALGORITHMS = {
     'gnomesort': ['Sorting_algorithms/Gnome_sort', 'Gnome Sort algorithm'],
     'hammingnumbers': ['Hamming_numbers', 'Hamming numbers'],
     'heapsort': ['Sorting_algorithms/Heapsort', 'Heap Sort algorithm'],
+    'helloworld': ['Hello_world/Text', 'Print Hello world in the given language'],
     'huffman': ['Huffman_coding', 'Huffman coding'],
     'insertionsort': ['Sorting_algorithms/Insertion_sort', 'Insertion Sort algorithm'],
     'isaac': ['The_ISAAC_Cipher', 'ISAAC Cipher'],
