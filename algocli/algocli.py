@@ -7,7 +7,7 @@ written by Emanuel Ramirez (emanuel2718@gmail.com)
 
 import argparse
 from algocli.util import COLORS, ALGORITHMS, SUPPORTED_LANGUAGES
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
 from contextlib import closing
 from requests import Session
 from requests.exceptions import RequestException
@@ -23,6 +23,9 @@ END = '\033[0m'
 STACK = []
 SKIP = ['<pre>']
 END_SKIP = ['</pre>']
+
+
+DEFAULT_LANGUAGE = 'Python'
 
 HEADERS = {'User-Agent':'Mozilla/5.0 (X11; CrOS x86_64 12871.102.0)'\
                         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36'}
@@ -53,10 +56,11 @@ class DataHandler:
         self.formal_algorithm = ALGORITHMS[self.algorithm_name][1]
 
 
-        self.data = self._get_data(self.get_url(), True)
+        self.data = self.get_data(self.get_url(), True)
+        #print(self.data)
 
         self.section_number, self.formatted_language = self._get_section_and_language()
-        self.raw_algorithm_code = self._get_data(self.get_code_url())
+        self.raw_algorithm_code = self.get_data(self.get_code_url())
 
         self.output_code = '\n'.join(self._format_code_for_output())
         self._print_code_to_console()
@@ -104,7 +108,7 @@ class DataHandler:
     def get_lang_replacement(self, line):
         return line.split(">", 1)[-1].split("<")[0]
 
-    def get_replacement_chars(self, line):
+    def _get_replacement_chars(self, line):
         return {f'<lang': f'{line.split(">", 1)[-1]}',
                 '}</lang>': '}',
                 '}</pre>': '}',
@@ -127,13 +131,13 @@ class DataHandler:
                 }
 
     def _remove_unwated_chars(self, line):
-        replacement_chars = self.get_replacement_chars(line)
+        replacement_chars = self._get_replacement_chars(line)
         for key in replacement_chars.keys():
             if line.startswith("<lang") and line.endswith("</lang>"):
                 return self.get_lang_replacement(line)
 
             elif line.startswith(key) or line.endswith(key):
-                return self.get_replacement_chars(line)[key]
+                return self._get_replacement_chars(line)[key]
         return line
 
     def is_valid_line(self, line):
@@ -172,13 +176,18 @@ class DataHandler:
             f'&action=edit&section={self.section_number}')
 
 
-    def _get_data(self, url, code=False):
+    def get_data(self, url, formatting_data=False):
         '''code := the request is for the final algorithm code'''
+
         try:
             with closing(session.get(url, headers=HEADERS, stream=True, timeout=5)) as response:
                 if self.is_valid_response(response):
-                    if code:
+                    if formatting_data:
+                        #toc = SoupStrainer(id='toc')
+                        #return BeautifulSoup(response.content, parse_only=toc)
                         return BeautifulSoup(response.content, 'html.parser').find(id='toc')
+                    #text_area = SoupStrainer('textarea')
+                    #return str(BeautifulSoup(response.content, parse_only=text_area).text)
                     return str(BeautifulSoup(response.content, 'html.parser').find('textarea').text)
                 else:
                     return None
@@ -206,10 +215,12 @@ class DataHandler:
 
     def get_sanitized_algorithm_name(self):
         ''' The rosettacode page address must contain the sorting algorithm in
-            a specific format. For example, -insertionsort must appear as Insertion_sort
+            a specific format. For example, -insertionsort appear as Insertion_sort
+            in Rosseta Code. Another example is the dijstra algorithm, if the user
+            gives the algorithm flag "dijkstra" it needs to be formatted into
+            Dijkstra%27s_algorithm to match Rosseta Code formatting
 
-        :param algo: the algorithm flag string (i.e selectionsort)
-        :return formatted algorithm string (i.e Selection_sort)
+        :return formatted self.algorithm (dijkstra) string as Dijkstra%27s_algorithm
         '''
         for key, value in ALGORITHMS.items():
             if self.algorithm_name == key:
@@ -217,16 +228,16 @@ class DataHandler:
         return None
 
     def get_sanitized_language(self):
-        ''' To get the data some language are reprensented in different in the
-            rosettacode website. For example, C++ is reprenseted as C.2B.2B in the page source
+        ''' Rosseta Code has some specific names for different languages. For example
+            C++ is represented as C.2B.2B and Python is reprensented as python in lowercase.
+            This function "sanitizes" the language flag to match the formatting of Rosseta Code
 
-            Python is the default language if no language flag was given
+            Default language is chosen if no language flag was found
 
-        :param algo: the language flag string (i.e csharp)
-        :return formatted language string (i.e C.23)
+        :return formatted self.language (chsarp) string as C.23
         '''
         if self.language is None:
-            return 'Python'
+            return DEFAULT_LANGUAGE
         for key, value in SUPPORTED_LANGUAGES.items():
             if self.language == key:
                 return value[0]

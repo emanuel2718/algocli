@@ -20,7 +20,15 @@ COLORS =  (
     'zenburn'
 )
 
+'''
+    ALGORITHMS configuration
+
+    key: user input algorithm flag
+    value[0]:  Rosseta Code algorithms format
+    value[1]:  Formal algorithm name to be displayed as output title
+'''
 ALGORITHMS = {
+    'astar': ['A*_search_algorithm', 'A* Search algorithm'],
     'avltrees': ['AVL_tree', 'AVL Trees'],
     'b64': ['Base64_decode_data', 'Decode Base64 data'],
     'beadsort': ['Sorting_algorithms/Bead_sort', 'Bead Sort algorithm'],
@@ -88,6 +96,15 @@ ALGORITHMS = {
     'toposort': ['Topological_sort', 'Topological Sort Algorithm']
 }
 
+
+
+'''
+    SUPPORTED_LANGUAGE configuration
+
+    key: user input language flag
+    value[0]:  Rosseta Code language format
+    value[1]:  Formal language name to be displayed as output title
+'''
 SUPPORTED_LANGUAGES = {
     'actionscript': ['ActionScript', 'Actionscript'],
     'ada': ['Ada', 'Ada'],
