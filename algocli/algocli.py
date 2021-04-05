@@ -283,7 +283,7 @@ def get_parser():
         help='colorized output',
         nargs='?',
         dest='colorscheme',
-        const='default',
+        const='vim',
         metavar='COLORSCHEME')
 
     return parser
