@@ -6,7 +6,7 @@ written by Emanuel Ramirez (emanuel2718@gmail.com)
 '''
 
 import argparse
-from algocli.util import COLORS, ALGORITHMS, SUPPORTED_LANGUAGES
+from algocli.util import ALGORITHMS, SUPPORTED_LANGUAGES, get_available_colors
 from bs4 import BeautifulSoup, SoupStrainer
 from contextlib import closing
 from requests import Session
@@ -27,8 +27,9 @@ END_SKIP = ['</pre>']
 
 DEFAULT_LANGUAGE = 'Python'
 
-HEADERS = {'User-Agent':'Mozilla/5.0 (X11; CrOS x86_64 12871.102.0)'\
-                        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36'}
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (X11; CrOS x86_64 12871.102.0)'
+    'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36'}
 
 session = Session()
 
@@ -55,9 +56,8 @@ class DataHandler:
         self.formal_language = SUPPORTED_LANGUAGES[self.language][1]
         self.formal_algorithm = ALGORITHMS[self.algorithm_name][1]
 
-
         self.data = self.get_data(self.get_url(), True)
-        #print(self.data)
+        # print(self.data)
 
         self.section_number, self.formatted_language = self._get_section_and_language()
         self.raw_algorithm_code = self.get_data(self.get_code_url())
@@ -78,19 +78,21 @@ class DataHandler:
         from pygments.formatters import Terminal256Formatter
 
         theme = self.args['colorscheme']
-        user_style = theme if theme in COLORS else 'default'
+        user_style = theme if theme in get_available_colors() else 'default'
         lexer = get_lexer_by_name(self.language, stripall=True)
-        formatter = Terminal256Formatter(bg='dark', linenos=False, style=user_style)
+        formatter = Terminal256Formatter(
+            bg='dark', linenos=False, style=user_style)
+
         return highlight(self.output_code, lexer, formatter)
 
     def display_tip_if_applicable(self):
-        if self.args['colorscheme'] not in COLORS:
+        if self.args['colorscheme'] not in get_available_colors():
             _print_tip(f'"algocli --list-colors" for available colorschemes\n')
-
 
     def _print_code_to_console(self):
         if not self.output_code.startswith('{{task'):
-            self._print_banner(f'{self.formal_algorithm} using {self.formal_language}')
+            self._print_banner(
+                f'{self.formal_algorithm} using {self.formal_language}')
 
             if not self.args['colorscheme']:
                 print(self.output_code)
@@ -175,7 +177,6 @@ class DataHandler:
             f'https://rosettacode.org/mw/index.php?title={self.sanitized_algorithm_name}'
             f'&action=edit&section={self.section_number}')
 
-
     def get_data(self, url, formatting_data=False):
         '''code := the request is for the final algorithm code'''
 
@@ -184,11 +185,19 @@ class DataHandler:
                 if self.is_valid_response(response):
                     if formatting_data:
                         #toc = SoupStrainer(id='toc')
-                        #return BeautifulSoup(response.content, parse_only=toc)
-                        return BeautifulSoup(response.content, 'html.parser').find(id='toc')
+                        # return BeautifulSoup(response.content,
+                        # parse_only=toc)
+                        return BeautifulSoup(
+                            response.content,
+                            'html.parser').find(
+                            id='toc')
                     #text_area = SoupStrainer('textarea')
-                    #return str(BeautifulSoup(response.content, parse_only=text_area).text)
-                    return str(BeautifulSoup(response.content, 'html.parser').find('textarea').text)
+                    # return str(BeautifulSoup(response.content,
+                    # parse_only=text_area).text)
+                    return str(
+                        BeautifulSoup(
+                            response.content,
+                            'html.parser').find('textarea').text)
                 else:
                     return None
         except RequestException as e:
@@ -196,11 +205,10 @@ class DataHandler:
             return None
 
     def is_valid_response(self, resp):
-        content_type =  resp.headers['Content-Type'].lower()
+        content_type = resp.headers['Content-Type'].lower()
         return (resp.status_code == 200
                 and content_type is not None
                 and content_type.find('html') > -1)
-
 
     def _get_section_and_language(self):
         for category in self.data('li'):
@@ -211,7 +219,6 @@ class DataHandler:
                     'span', {'class': 'toctext'}).text
                 return section_number, formatted_language
         return None, None
-
 
     def get_sanitized_algorithm_name(self):
         ''' The rosettacode page address must contain the sorting algorithm in
@@ -243,6 +250,7 @@ class DataHandler:
                 return value[0]
         return None
 
+
 def _print_tip(msg):
     print(f'{BOLD}[TIP]{END} {msg}')
 
@@ -262,11 +270,11 @@ def _print_ok(msg):
 def _print_debug(msg):
     print(f'{BOLD}[DEBUG]{END} {msg}')
 
-def _print_list(msg, arr):
-    print('\n' + msg)
 
-    # For COLORS list which is a tuple
-    if isinstance(arr, tuple):
+def _print_list(msg, arr):
+    print('\n' + msg + '\n')
+
+    if isinstance(arr, tuple) or isinstance(arr, list):
         for item in arr:
             print(f'- {item}')
     else:
@@ -328,6 +336,7 @@ def is_valid_input(arr, arg_input):
             return key.lower()
     return None
 
+
 def get_algo_and_lang_from_input(stdin):
     args = stdin
     if isinstance(stdin, str):
@@ -348,8 +357,9 @@ def run():
         return
 
     if args['list_colors']:
-        _print_list('Supported Colorscemes: [Example: algocli -b64 -python --color rrt]',
-                    COLORS)
+        _print_list(
+            'Supported Colorscemes: [Example: algocli -b64 -python --color rrt]',
+            get_available_colors())
         return
 
     if args['list_lang']:
@@ -367,13 +377,16 @@ def run():
     else:
         algo, lang = get_algo_and_lang_from_input(args)
         if algo is None:
-            _print_error('Not valid algorithm specified. See algocli --list-algo')
+            _print_error(
+                'Not valid algorithm specified. See algocli --list-algo')
             return
         if lang is None:
-            _print_error('Not valid language specified. See algocli --list-lang')
+            _print_error(
+                'Not valid language specified. See algocli --list-lang')
             return
 
         data_handler = DataHandler(algo, lang, args)
+
 
 if __name__ == '__main__':
     run()

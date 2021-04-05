@@ -3,22 +3,16 @@ Utility data structures
 Written by Emanuel Ramirez (emanuel2718@gmail.com)
 '''
 
-COLORS =  (
-    'bw',
-    'default',
-    'fruity',
-    'igor',
-    'lovelace',
-    'material',
-    'monokai',
-    'pastie',
-    'rrt',
-    'solarized-dark',
-    'solarized-light',
-    'stata-dark',
-    'trac',
-    'zenburn'
-)
+
+def get_available_colors():
+    ''' Returns the a list of available pygments.styles colorschemes
+
+    NOTE: Can't be a hardcoded list of selected colorschemes because
+          some colorschemes are added by external plugins and even removed
+    '''
+    from pygments.styles import get_all_styles
+    return list(get_all_styles())
+
 
 '''
     ALGORITHMS configuration
@@ -95,7 +89,6 @@ ALGORITHMS = {
     'subcipher': ['Substitution_cipher', 'Substitution Cipher'],
     'toposort': ['Topological_sort', 'Topological Sort Algorithm']
 }
-
 
 
 '''
