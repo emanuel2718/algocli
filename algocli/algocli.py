@@ -146,7 +146,7 @@ class DataHandler:
         '''code := the request is for the final algorithm code'''
 
         try:
-            with closing(session.get(url, headers=HEADERS, stream=True, timeout=5)) as response:
+            with closing(session.get(url, headers=HEADERS, stream=True, timeout=10)) as response:
                 if self.is_valid_response(response):
                     if formatting_data:
                         return BeautifulSoup(
@@ -254,7 +254,7 @@ def get_parser():
         type=str,
         nargs='*',
         metavar='INPUT',
-        help='the algorithm and language combo (i.e algocli python insertionsort)')
+        help='the language and algorithm (i.e algocli python fib)')
 
     parser.add_argument(
         '-v',

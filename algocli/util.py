@@ -132,3 +132,6 @@ SUPPORTED_LANGUAGES = {
     'swift': ['Swift', 'Swift']
 
 }
+
+if __name__ == '__main__':
+     print('This file is not intended to be called by the user. See algocli --help')
