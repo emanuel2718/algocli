@@ -6,6 +6,7 @@ written by Emanuel Ramirez (emanuel2718@gmail.com)
 '''
 
 import argparse
+import algocli.replacer as replacer
 from algocli.util import ALGORITHMS, SUPPORTED_LANGUAGES, get_available_colors
 from bs4 import BeautifulSoup, SoupStrainer
 from contextlib import closing
@@ -57,7 +58,6 @@ class DataHandler:
         self.formal_algorithm = ALGORITHMS[self.algorithm_name][1]
 
         self.data = self.get_data(self.get_url(), True)
-        # print(self.data)
 
         self.section_number, self.formatted_language = self._get_section_and_language()
         self.raw_algorithm_code = self.get_data(self.get_code_url())
@@ -107,41 +107,6 @@ class DataHandler:
             _print_error(
                 f'No results found for {self.formal_algorithm} using {self.formal_language}')
 
-    def get_lang_replacement(self, line):
-        return line.split(">", 1)[-1].split("<")[0]
-
-    def _get_replacement_chars(self, line):
-        return {f'<lang': f'{line.split(">", 1)[-1]}',
-                '}</lang>': '}',
-                '}</pre>': '}',
-                '</pre>': '',
-                '<pre': '',
-                '{{works': '',
-                '</lang>': f'{line.partition("</")[0]}',
-                '=={{header': '',
-                '===': f'\n{line}\n',
-                '{{trans': '',
-                '<br>': '',
-                '{{Out}}': '\n=== Output ===',
-                '{{out}}Output': f'\n=== {line.rpartition("}")[-1]} ===',
-                '{{out}}': '',
-                '{{libheader': '',
-                'Output:': '',
-                "'''Output'''": '',
-                "'''": f'\n{line}',
-                'Usage:': "\n\n'''How to use'''"
-                }
-
-    def _remove_unwated_chars(self, line):
-        replacement_chars = self._get_replacement_chars(line)
-        for key in replacement_chars.keys():
-            if line.startswith("<lang") and line.endswith("</lang>"):
-                return self.get_lang_replacement(line)
-
-            elif line.startswith(key) or line.endswith(key):
-                return self._get_replacement_chars(line)[key]
-        return line
-
     def is_valid_line(self, line):
         if line.startswith('<pre>') and line.endswith('</pre>'):
             return False
@@ -165,7 +130,7 @@ class DataHandler:
                 return result
             else:
                 if self.is_valid_line(line):
-                    line = self._remove_unwated_chars(line)
+                    line = replacer.get_replacement_line(line)
                     result.append(line)
         return result
 
@@ -184,16 +149,10 @@ class DataHandler:
             with closing(session.get(url, headers=HEADERS, stream=True, timeout=5)) as response:
                 if self.is_valid_response(response):
                     if formatting_data:
-                        #toc = SoupStrainer(id='toc')
-                        # return BeautifulSoup(response.content,
-                        # parse_only=toc)
                         return BeautifulSoup(
                             response.content,
                             'html.parser').find(
                             id='toc')
-                    #text_area = SoupStrainer('textarea')
-                    # return str(BeautifulSoup(response.content,
-                    # parse_only=text_area).text)
                     return str(
                         BeautifulSoup(
                             response.content,
