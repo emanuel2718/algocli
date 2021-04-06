@@ -47,7 +47,7 @@ class DataHandler:
                 self.formal_language            =: 'C++'
                 self.formal_algorithm           =: 'Insertion Sort algorithm'
         '''
-        self.start_time = time()
+        #self.start_time = time()
         self.language = language
         self.algorithm_name = algorithm
         self.args = args
@@ -67,7 +67,7 @@ class DataHandler:
         self.output_code = '\n'.join(self._format_code_for_output())
         self._print_code_to_console()
         self.display_tip_if_applicable()
-        _print_debug(f'Time taken: {time()-self.start_time:.4} seconds')
+        #_print_debug(f'Time taken: {time()-self.start_time:.4} seconds')
 
     def _print_banner(self, msg):
         print('\n\n' + '=' * 70)
@@ -289,14 +289,25 @@ def get_parser():
 
     return parser
 
+def is_valid_input(arr, input_flag) -> str:
+    ''' Check if the given algorithm or language flag (@input_flag) is valid.
 
-def is_valid_input(arr, arg_input):
-    for key in arr:
-        if key.lower() in {arg_input[0], arg_input[1]}:
-            return key.lower()
+    :param  arr: list of available algorithms or supported language
+    :param: input_flag: list of algorithm and/or language input flags
+    :return the language or algorithm flag if valid
+    '''
+    for arg in input_flag:
+        if arg.lower() in arr.keys():
+            return arg.lower()
+
     return None
 
-def parse_input(stdin):
+def parse_input(stdin) -> tuple:
+    ''' Returns the parsed algorithm and language input flags received from stdin.
+
+    :param: stdin: argument parser
+    :return tuple in the form (algorithm name, language name)
+    '''
     args = stdin
 
     # handle input of form: algocli -c radixsort cpp were the color flag is followed
