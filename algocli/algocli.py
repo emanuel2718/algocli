@@ -27,6 +27,7 @@ END_SKIP = ['</pre>']
 
 
 DEFAULT_LANGUAGE = 'Python'
+DEFAULT_COLOR = 'monokai'
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; CrOS x86_64 12871.102.0)'
@@ -36,7 +37,7 @@ session = Session()
 
 
 class DataHandler:
-    def __init__(self, algorithm, language, args):
+    def __init__(self, args, algorithm, language):
         '''
             Example variable values:
                 self.language                   =: 'cpp'
@@ -50,6 +51,7 @@ class DataHandler:
         self.language = language
         self.algorithm_name = algorithm
         self.args = args
+        self.color = args['colorscheme']
 
         self.sanitized_language = self.get_sanitized_language()
         self.sanitized_algorithm_name = self.get_sanitized_algorithm_name()
@@ -77,8 +79,7 @@ class DataHandler:
         from pygments.lexers import get_lexer_by_name
         from pygments.formatters import Terminal256Formatter
 
-        theme = self.args['colorscheme']
-        user_style = theme if theme in get_available_colors() else 'default'
+        user_style = self.color if self.color in get_available_colors() else 'default'
         lexer = get_lexer_by_name(self.language, stripall=True)
         formatter = Terminal256Formatter(
             bg='dark', linenos=False, style=user_style)
@@ -295,9 +296,17 @@ def is_valid_input(arr, arg_input):
             return key.lower()
     return None
 
-
-def get_algo_and_lang_from_input(stdin):
+def parse_input(stdin):
     args = stdin
+
+    # handle input of form: algocli -c radixsort cpp were the color flag is followed
+    # by an algorithm or language flag
+    if (args['colorscheme'] in ALGORITHMS.keys() or
+        args['colorscheme'] in SUPPORTED_LANGUAGES.keys()):
+
+        args['input'].append(args['colorscheme'])
+        args['colorscheme'] = DEFAULT_COLOR
+
     if isinstance(stdin, str):
         parser = get_parser()
         args = vars(parser.parse_args(raw_in.split(' ')))
@@ -334,7 +343,7 @@ def run():
         return
 
     else:
-        algo, lang = get_algo_and_lang_from_input(args)
+        algo, lang = parse_input(args)
         if algo is None:
             _print_error(
                 'Not valid algorithm specified. See algocli --list-algo')
@@ -344,7 +353,7 @@ def run():
                 'Not valid language specified. See algocli --list-lang')
             return
 
-        data_handler = DataHandler(algo, lang, args)
+        data_handler = DataHandler(args, algo, lang)
 
 
 if __name__ == '__main__':
