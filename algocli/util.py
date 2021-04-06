@@ -7,8 +7,10 @@ Written by Emanuel Ramirez (emanuel2718@gmail.com)
 def get_available_colors():
     ''' Returns the a list of available pygments.styles colorschemes
 
-    NOTE: Can't be a hardcoded list of selected colorschemes because
-          some colorschemes are added by external plugins and even removed
+    NOTE:   Can't be a hardcoded list of selected colorschemes because
+            some colorschemes are added by external plugins.
+            Plus some colors are not available in all Operating systems.
+
     '''
     from pygments.styles import get_all_styles
     return list(get_all_styles())
