@@ -15,7 +15,6 @@ Print common algorithms to the command line
   - [Supported Algorithms](#supported-algorithms)
 * [Examples](#examples)
 * [Available Themes](#available-themes)
-* [Things to do](#things-to-do)
 * [Contributions](#contributions)
 * [Credits](#credits)
 
@@ -221,26 +220,6 @@ Correct language query (shown on the left) must be given for **algocli** to unde
 # Contributions
 
 *insert contributions message here*
-
-
-
-# Things to do:
-
-- [x] Make a theme file and link it in README.md
-- [x] Fix bug in helloworld (python) ----> <lang ..... </lang>
-- [x] Make Colorscheme section with photos in README.
-- [x] Fix bug with color flag (i.e algocli -c radixsort cpp)
-- [ ] Add support for Cygwin terminal (bug -> Pygments and BOLD chars)
-- [ ] Publish version 0.1 to pip and Homebrew. (Maybe macports?)
-- [ ] Handle RELEASES
-- [ ] Make test suit
-- [ ] Let the user change the default language and colorscheme (This works with insalled packages? How?)
-- [ ] Add the option of giving (c++, C++, cplusplus, c+++ or cpp as language input)
-- [ ] Reduce the amount it takes to output the data (Acceptable range 1-1.9 seconds. Now in 3-4 seconds)
-- [ ] Handle different OS (Windows, Linux, MacOS)
-- [ ] Handle excesive long lines (i.e -b64 -java, -b64 -cpp)
-- [ ] Hanlde user input errors
-- [ ] Add autcompletion for algorithms? Could be neat!
 
 &nbsp; 
 
