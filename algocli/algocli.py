@@ -47,7 +47,7 @@ class DataHandler:
                 self.formal_language            =: 'C++'
                 self.formal_algorithm           =: 'Insertion Sort algorithm'
         '''
-        #self.start_time = time()
+
         self.language = language
         self.algorithm_name = algorithm
         self.args = args
@@ -59,22 +59,18 @@ class DataHandler:
         self.formal_language = SUPPORTED_LANGUAGES[self.language][1]
         self.formal_algorithm = ALGORITHMS[self.algorithm_name][1]
 
+        #self.start_time = time()
         self.data = self.get_data(self.get_url(), True)
-
-        self.section_number, self.formatted_language = self._get_section_and_language()
-        self.raw_algorithm_code = self.get_data(self.get_code_url())
-
-        self.output_code = '\n'.join(self._format_code_for_output())
-        self._print_code_to_console()
-        self.display_tip_if_applicable()
         #_print_debug(f'Time taken: {time()-self.start_time:.4} seconds')
+
+        self.section_number, self.formatted_language = self.get_section_and_language()
 
     def _print_banner(self, msg):
         print('\n\n' + '=' * 70)
         print(msg.center(70))
         print('=' * 70 + '\n\n')
 
-    def _get_colored_output(self):
+    def _get_colored_output(self, output_code):
         from pygments import highlight
         from pygments.lexers import get_lexer_by_name
         from pygments.formatters import Terminal256Formatter
@@ -84,21 +80,21 @@ class DataHandler:
         formatter = Terminal256Formatter(
             bg='dark', linenos=False, style=user_style)
 
-        return highlight(self.output_code, lexer, formatter)
+        return highlight(output_code, lexer, formatter)
 
     def display_tip_if_applicable(self):
         if self.args['colorscheme'] not in get_available_colors():
             _print_tip(f'"algocli --list-colors" for available colorschemes\n')
 
-    def _print_code_to_console(self):
-        if not self.output_code.startswith('{{task'):
+    def print_code_to_console(self, output_code):
+        if not output_code.startswith('{{task'):
             self._print_banner(
                 f'{self.formal_algorithm} using {self.formal_language}')
 
             if not self.args['colorscheme']:
-                print(self.output_code)
+                print(output_code)
             else:
-                print(self._get_colored_output())
+                print(self._get_colored_output(output_code))
 
             self._print_banner('ALGORITHM OUTPUT ENDS HERE')
 
@@ -122,9 +118,9 @@ class DataHandler:
             STACK.pop()
             return False
 
-    def _format_code_for_output(self):
+    def format_code_for_output(self, raw_algorithm_code):
         result = []
-        code = self.raw_algorithm_code.split('\n')
+        code = raw_algorithm_code.split('\n')
 
         for line in code:
             if line in STOP_FLAGS:
@@ -142,6 +138,13 @@ class DataHandler:
         return (
             f'https://rosettacode.org/mw/index.php?title={self.sanitized_algorithm_name}'
             f'&action=edit&section={self.section_number}')
+
+    '''
+    NOTE:   THIS IS SLOOOOOOOOW! Taking ~3 seconds on average. Want to take this down to 1
+            second on average TOPS!
+
+    TODO:   divide this into separate function for more legibility
+    '''
 
     def get_data(self, url, formatting_data=False):
         '''code := the request is for the final algorithm code'''
@@ -170,7 +173,7 @@ class DataHandler:
                 and content_type is not None
                 and content_type.find('html') > -1)
 
-    def _get_section_and_language(self):
+    def get_section_and_language(self):
         for category in self.data('li'):
             current_language = category.find('a')['href'].lstrip('#')
             if current_language.lower() == self.sanitized_language.lower():
@@ -289,6 +292,7 @@ def get_parser():
 
     return parser
 
+
 def is_valid_input(arr, input_flag) -> str:
     ''' Check if the given algorithm or language flag (@input_flag) is valid.
 
@@ -302,6 +306,7 @@ def is_valid_input(arr, input_flag) -> str:
 
     return None
 
+
 def parse_input(stdin) -> tuple:
     ''' Returns the parsed algorithm and language input flags received from stdin.
 
@@ -313,7 +318,7 @@ def parse_input(stdin) -> tuple:
     # handle input of form: algocli -c radixsort cpp were the color flag is followed
     # by an algorithm or language flag
     if (args['colorscheme'] in ALGORITHMS.keys() or
-        args['colorscheme'] in SUPPORTED_LANGUAGES.keys()):
+            args['colorscheme'] in SUPPORTED_LANGUAGES.keys()):
 
         args['input'].append(args['colorscheme'])
         args['colorscheme'] = DEFAULT_COLOR
@@ -365,6 +370,11 @@ def run():
             return
 
         data_handler = DataHandler(args, algo, lang)
+        raw_algorithm_code = data_handler.get_data(data_handler.get_code_url())
+        formatted_output_code = '\n'.join(
+            data_handler.format_code_for_output(raw_algorithm_code))
+        data_handler.print_code_to_console(formatted_output_code)
+        # data_handler.display_tip_if_applicable()
 
 
 if __name__ == '__main__':

@@ -14,9 +14,10 @@ class TestAlgocli(unittest.TestCase):
             'list_colors': False,
             'list_lang': False,
             'list_algo': False,
-            'colorscheme': None
+            'colorscheme': None,
         }
-        #self.data_handler = algocli.DataHandler('python', 'insertionsort', args)
+
+        self.data_handler = algocli.DataHandler(args, 'insertionsort', 'python')
         #
         #
     def test_evenNumber(self):
