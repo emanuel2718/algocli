@@ -25,10 +25,6 @@ Print common algorithms to the command line
 Use pip:
 
     $ pip install algocli
-    
-macOS users can install using [Homebrew](https://brew.sh):
-
-    $ brew install algocli
 
 Manual installation:
 
