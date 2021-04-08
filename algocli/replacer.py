@@ -45,6 +45,9 @@ def get_replacement_line(curr_line):
     elif curr_line.startswith('{{out}}Output'):
         return f'\n=== {curr_line.rpartition("}")[-1]} ==='
 
+    elif curr_line.endswith('.'):
+        return f'{curr_line}\n'
+
     else:
         for key in BASIC_TOKENS.keys():
             if curr_line.startswith(key) or curr_line.endswith(key):
