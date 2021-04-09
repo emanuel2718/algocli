@@ -4,9 +4,6 @@ from setuptools import setup
 import algocli
 
 
-#long_description = ''
-#with open('README.md', 'r') as f:
-#    long_description = f.read()
 
 # read the contents of your README file
 from os import path

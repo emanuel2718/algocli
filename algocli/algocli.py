@@ -59,9 +59,7 @@ class DataHandler:
         self.formal_language = SUPPORTED_LANGUAGES[self.language][1]
         self.formal_algorithm = ALGORITHMS[self.algorithm_name][1]
 
-        #self.start_time = time()
         self.data = self.get_data(self.get_url(), True)
-        #_print_debug(f'Time taken: {time()-self.start_time:.4} seconds')
 
         self.section_number, self.formatted_language = self.get_section_and_language()
 
@@ -85,6 +83,14 @@ class DataHandler:
     def display_tip_if_applicable(self):
         if self.args['colorscheme'] not in get_available_colors():
             _print_tip(f'"algocli --list-colors" for available colorschemes\n')
+
+    def dump_output_to_file(self, output_code):
+        header = f'\n===== {self.formal_algorithm} using {self.formal_language} ====='
+        with open('results.txt', 'a') as output_file:
+            output_file.write(header)
+            output_file.write(output_code)
+            output_file.write(
+                '\n====================================================\n')
 
     def print_code_to_console(self, output_code):
         if not output_code.startswith('{{task'):
@@ -132,6 +138,17 @@ class DataHandler:
         return result
 
     def get_url(self):
+        ''' Returns the url of the desired algorithm
+            This url points to a a rosettacode page with all the available
+            languages for the specified algorithm.
+
+            NOTE: algorithm name must match RosettaCode naming convention.
+                  If the user want to search for `algocli insertionsort cpp`
+                  then the url should be:
+
+                  https://rosettacode.org/wiki/Sorting_algorithms/Insertion_sort'
+
+        '''
         return f'https://rosettacode.org/wiki/{self.sanitized_algorithm_name}'
 
     def get_code_url(self):
@@ -282,6 +299,11 @@ def get_parser():
         action='store_true')
 
     parser.add_argument(
+        '--file',
+        help='save output to results.txt',
+        action='store_true')
+
+    parser.add_argument(
         '-c',
         '--color',
         help='colorized output',
@@ -369,12 +391,17 @@ def run():
                 'Not valid language specified. See algocli --list-lang')
             return
 
+        #start_time = time()
         data_handler = DataHandler(args, algo, lang)
         raw_algorithm_code = data_handler.get_data(data_handler.get_code_url())
         formatted_output_code = '\n'.join(
             data_handler.format_code_for_output(raw_algorithm_code))
-        data_handler.print_code_to_console(formatted_output_code)
-        # data_handler.display_tip_if_applicable()
+
+        if args['file']:
+            data_handler.dump_output_to_file(formatted_output_code)
+        else:
+            data_handler.print_code_to_console(formatted_output_code)
+        #_print_debug(f'Time taken: {time()-start_time:.4} seconds')
 
 
 if __name__ == '__main__':
