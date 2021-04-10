@@ -85,8 +85,8 @@ class DataHandler:
             _print_tip(f'"algocli --list-colors" for available colorschemes\n')
 
     def dump_output_to_file(self, output_code):
-        header = f'\n===== {self.formal_algorithm} using {self.formal_language} ====='
-        with open('results.txt', 'a') as output_file:
+        header = f'\n===== {self.formal_algorithm.upper()} using {self.formal_language.upper()} =====\n'
+        with open('results.txt', 'a', encoding='utf-8') as output_file:
             output_file.write(header)
             output_file.write(output_code)
             output_file.write(
