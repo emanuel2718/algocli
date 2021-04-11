@@ -61,7 +61,7 @@ a browser search through countless articles about how to do [insertionsort in py
                             colorized output
     
 
-## Supported Language:
+## Supported Languages:
 
 Correct language query (shown on the left) must be given for **algocli** to understand
 
