@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 '''Tests for algocli'''
+import os
 import unittest
 from algocli import algocli
 from algocli import util
@@ -53,21 +54,27 @@ class TestAlgocli(unittest.TestCase):
     #            except:
     #                print(': Failed!')
 
-    def test_all_algorithms(self):
-        import os
-        with open('results.txt', 'w') as output_file:
-            for lang in util.SUPPORTED_LANGUAGES:
-                print(f'\n----- *{lang.upper()}* -----\n')
-                for algo in util.ALGORITHMS.keys():
-                    print(f'Testing: algocli {algo} {lang}', end='')
-                    try:
-                        os.system(f'python -m algocli {algo.upper()} {lang.upper()} --file')
-                        print(': OK!\n')
-                    except:
-                        print(': Failed!')
+    #def test_all_algorithms(self):
+    #    for lang in util.SUPPORTED_LANGUAGES:
+    #        print(f'\n----- {lang.upper()} -----\n')
+    #        for algo in util.ALGORITHMS.keys():
+    #            print(f'Testing: algocli {algo} {lang}', end='')
+    #            curr_command = f'python -m algocli {algo} {lang} --file'
+    #            if os.system(curr_command) == 0:
+    #                print(': OK!\n')
+    #            else:
+    #                print(': Failed!')
 
 
-
+    def test_specific_language(self):
+        language = 'cpp' # TODO: change this
+        for algo in util.ALGORITHMS.keys():
+            print(f'Testing: algocli {algo} {language}', end='')
+            curr_command = f'python -m algocli {algo} {language} --file'
+            if os.system(curr_command) == 0:
+                print(': OK!\n')
+            else:
+                print(': Failed!')
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
