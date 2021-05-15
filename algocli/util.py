@@ -120,6 +120,7 @@ SUPPORTED_LANGUAGES = {
     'objc': ['Objective-C', 'Objective-C'],
     'java': ['Java', 'Java'],
     'javascript': ['JavaScript', 'Javascript'],
+    'julia': ['Julia', 'Julia'],
     'lua': ['Lua', 'Lua'],
     'matlab': ['MATLAB', 'Matlab'],
     'ocaml': ['Ocaml', 'Ocaml'],
