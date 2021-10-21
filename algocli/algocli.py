@@ -14,6 +14,7 @@ from requests import Session
 from requests.exceptions import RequestException
 from time import time
 from algocli import __version__
+from pydoc import pager, pipepager
 
 STOP_FLAGS = ["'''Library'''"]
 
@@ -27,7 +28,7 @@ END_SKIP = ['</pre>']
 
 
 DEFAULT_LANGUAGE = 'Python'
-DEFAULT_COLOR = 'monokai'
+DEFAULT_COLOR = 'default'
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; CrOS x86_64 12871.102.0)'
@@ -63,11 +64,6 @@ class DataHandler:
 
         self.section_number, self.formatted_language = self.get_section_and_language()
 
-    def _print_banner(self, msg):
-        print('\n\n' + '=' * 70)
-        print(msg.center(70))
-        print('=' * 70 + '\n\n')
-
     def _get_colored_output(self, output_code):
         from pygments import highlight
         from pygments.lexers import get_lexer_by_name
@@ -94,15 +90,10 @@ class DataHandler:
 
     def print_code_to_console(self, output_code):
         if not output_code.startswith('{{task'):
-            self._print_banner(
-                f'{self.formal_algorithm} using {self.formal_language}')
-
             if not self.args['colorscheme']:
-                print(output_code)
+                pager(output_code)
             else:
-                print(self._get_colored_output(output_code))
-
-            self._print_banner('ALGORITHM OUTPUT ENDS HERE')
+                pipepager(self._get_colored_output(output_code), cmd='less -R')
 
         # No modifications done to the raw algorithm means no match was found
         # for that specific language/algorithm
@@ -402,7 +393,6 @@ def run():
         else:
             data_handler.print_code_to_console(formatted_output_code)
         #_print_debug(f'Time taken: {time()-start_time:.4} seconds')
-
 
 if __name__ == '__main__':
     run()
